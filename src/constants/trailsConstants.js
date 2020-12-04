@@ -1,0 +1,2 @@
+export const FETCH_TRAILS = "FETCH_TRAILS";
+export const GET_SEARCH_LOCATION = "GET_SEARCH_LOCATION";
