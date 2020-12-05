@@ -14,26 +14,48 @@ export default function GeneralSearchContainer() {
   const [address, setAddress] = useState("");
   const dispatch = useDispatch();
 
-  console.log(coords, address, "THIS ARE THASFA FASf");
   return (
-    <div className="flex-center" style={{ height: "200px" }}>
-      <GeneralSearch
-        setCoords={setCoords}
-        setAddress={setAddress}
-        address={address}
-      />
+    <div
+      className="flex-center"
+      style={{
+        height: "100px",
+        // width: "100%",
+        border: "2px solid blue",
+        width: "200px",
+        // width: "50%",
+        // position: "absolute",
+        // top: 100,
+        // right: 0,
+      }}
+    >
+      <div
+        className="flex-center"
+        style={{
+          border: "2px solid red",
 
-      <Link to={`/trails/&${coords.lat}&${coords.lng}&${address}`}>
-        <IconButton
-          aria-label="delete"
-          // onClick={() =>
-          //   dispatch(fetchTrailsFromSearch(coords.lat, coords.lng, address))
-          // }
-          size="small"
-        >
-          <ArrowDownwardIcon fontSize="inherit" />
-        </IconButton>
-      </Link>
+          // position: "absolute",
+          // top: 100,
+          // right: 0,
+        }}
+      >
+        <GeneralSearch
+          setCoords={setCoords}
+          setAddress={setAddress}
+          address={address}
+        />
+
+        <Link to={`/trails/&${coords.lat}&${coords.lng}&${address}`}>
+          <IconButton
+            aria-label="delete"
+            // onClick={() =>
+            //   dispatch(fetchTrailsFromSearch(coords.lat, coords.lng, address))
+            // }
+            size="small"
+          >
+            <ArrowDownwardIcon fontSize="inherit" />
+          </IconButton>
+        </Link>
+      </div>
     </div>
   );
 }

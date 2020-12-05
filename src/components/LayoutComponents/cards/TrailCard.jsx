@@ -1,4 +1,5 @@
 import React from "react";
+import { useSelector, useDispatch } from "react-redux";
 import {
   Card,
   CardActionArea,
@@ -10,7 +11,7 @@ import {
   Grid,
 } from "@material-ui/core";
 import { Rating } from "@material-ui/lab";
-
+import { fetchSingleTrailInfo } from "../../../actions/singleTrailAction";
 import { makeStyles } from "@material-ui/styles";
 import { motion } from "framer-motion";
 
@@ -24,16 +25,21 @@ const useStyles = makeStyles({
   },
 });
 
-export default function TrailCard({ trailInfo }) {
+export default function TrailCard({ trailInfo, setModalOpen }) {
   const classes = useStyles();
+  const dispatch = useDispatch();
+  const handleCardClick = () => {
+    dispatch(fetchSingleTrailInfo(trailInfo.id));
+    setModalOpen(true);
+  };
   return (
     <Grid item xs={6} sm={6} md={3}>
       <motion.div initial="hidden" animate="show">
         <Card className={classes.root}>
-          <CardActionArea>
+          <CardActionArea onClick={handleCardClick}>
             <CardMedia
               className={classes.media}
-              image={trailInfo.imgMedium}
+              image={trailInfo.imgSmall}
               title="Contemplative Reptile"
             />
             <CardContent className={classes.contents}>

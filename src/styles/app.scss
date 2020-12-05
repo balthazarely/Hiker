@@ -11,8 +11,13 @@
   justify-content: center;
 }
 
+.flex-end {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+  justify-content: flex-end;
+}
+
 .hidden {
   opacity: 0;
 }
-
-//   @import "./login";

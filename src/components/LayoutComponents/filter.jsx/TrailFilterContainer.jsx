@@ -1,5 +1,12 @@
-import { Grid } from "@material-ui/core";
-import React from "react";
+import React, { useState } from "react";
+import {
+  Grid,
+  Radio,
+  RadioGroup,
+  FormControl,
+  FormLabel,
+  FormControlLabel,
+} from "@material-ui/core";
 import DistanceSlider from "../sliders/DistanceSlider";
 import { makeStyles } from "@material-ui/core/styles";
 
@@ -11,7 +18,12 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-export default function TrailFilterContainer({ sliderValue, setSliderValue }) {
+export default function TrailFilterContainer({
+  sliderValue,
+  setSliderValue,
+  handleRadioChange,
+  radioValue,
+}) {
   const classes = useStyles();
 
   return (
@@ -20,6 +32,27 @@ export default function TrailFilterContainer({ sliderValue, setSliderValue }) {
         sliderValue={sliderValue}
         setSliderValue={setSliderValue}
       />
+      {/* <FormControl component="fieldset">
+        <FormLabel component="legend">Gender</FormLabel>
+        <RadioGroup
+          aria-label="gender"
+          name="gender1"
+          value={radioValue}
+          onChange={handleRadioChange}
+        >
+          <FormControlLabel value="easy" control={<Radio />} label="easy" />
+          <FormControlLabel
+            value="moderate"
+            control={<Radio />}
+            label="moderate"
+          />
+          <FormControlLabel
+            value="difficult"
+            control={<Radio />}
+            label="difficult"
+          />
+        </RadioGroup>
+      </FormControl> */}
     </Grid>
   );
 }

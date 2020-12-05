@@ -5,7 +5,8 @@ import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles(() => ({
   content: {
-    // marginTop: "10px",
+    border: "2px solid red",
+    // width: "50%",
     marginBottom: "30px",
   },
 }));
