@@ -3,21 +3,20 @@ import ReactMapGL, { Marker, Popup } from "react-map-gl";
 import { useSelector } from "react-redux";
 import { convertToNum } from "../../../utility/utility";
 import FlagIcon from "@material-ui/icons/Flag";
+import { Typography } from "@material-ui/core";
+import { Rating } from "@material-ui/lab";
 
 export default function EventMap({ trails, coordinates }) {
   const [clickedTrail, setClickedTrail] = useState({});
   //   const [showClickedTrail, setShowClickedTrail] = useState(false);
   const [popUpOpen, setPopUpOpen] = useState(false);
-
   const [viewport, setViewport] = useState({
-    latitude: convertToNum(coordinates[0]),
-    longitude: convertToNum(coordinates[1]),
+    latitude: coordinates.length > 0 ? convertToNum(coordinates[0]) : 44,
+    longitude: coordinates.length > 0 ? convertToNum(coordinates[1]) : -105,
     width: "100%",
     height: "100%",
     zoom: 11,
   });
-
-  console.log(trails);
 
   return (
     <div
@@ -78,6 +77,19 @@ export default function EventMap({ trails, coordinates }) {
               }}
             >
               <h4>{clickedTrail.name}</h4>
+              <Typography
+                gutterBottom
+                variant="subtitle2"
+                component="h2"
+                color="primary"
+              >
+                {clickedTrail.length} Miles
+              </Typography>
+              <Rating
+                name="simple-controlled"
+                value={clickedTrail.stars}
+                size="small"
+              />
             </Popup>
           ) : null}
         </ReactMapGL>

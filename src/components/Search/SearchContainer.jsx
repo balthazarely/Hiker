@@ -21,13 +21,7 @@ export default function SearchContainer({ setCoords, coords, setViewport }) {
       <IconButton
         aria-label="delete"
         onClick={() =>
-          dispatch(
-            fetchTrailsFromSearch(
-              coords.lat,
-              coords.lng,
-              formatAddress(address)
-            )
-          )
+          dispatch(fetchTrailsFromSearch(coords.lat, coords.lng, address))
         }
         size="small"
       >

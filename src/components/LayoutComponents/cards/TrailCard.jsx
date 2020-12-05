@@ -22,7 +22,7 @@ const useStyles = makeStyles({
     height: 200,
   },
   contents: {
-    minHeight: 190,
+    height: 190,
   },
 });
 
@@ -32,6 +32,10 @@ export default function TrailCard({ trailInfo, setModalOpen }) {
   const handleCardClick = () => {
     dispatch(fetchSingleTrailInfo(trailInfo.id));
     setModalOpen(true);
+  };
+
+  const textLimiter = (str) => {
+    return str.length > 90 ? str.slice(0, 90) + "..." : str.slice(0, 90);
   };
   return (
     <Grid item xs={6} sm={4} md={4} lg={3}>
@@ -62,7 +66,7 @@ export default function TrailCard({ trailInfo, setModalOpen }) {
                   size="small"
                 />
                 <Typography gutterBottom variant="body" component="body">
-                  {trailInfo.summary}
+                  {textLimiter(trailInfo.summary)}
                 </Typography>
               </CardContent>
             </CardActionArea>

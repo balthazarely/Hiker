@@ -81,7 +81,7 @@ export default function SingleTrailModal({ setModalOpen, pathId }) {
               image={trailInfo.imgMedium}
               title="Contemplative Reptile"
             />
-            {trailInfo.stars >= 4.8 ? (
+            {trailInfo.stars >= 4.6 ? (
               <IconWrapper>
                 <h4>RECOMMENDED TRAIL</h4>
                 <FavoriteIcon color="primary">add_circle</FavoriteIcon>
@@ -167,7 +167,7 @@ const CardShadow = styled(motion.div)`
   align-items: center;
   top: 0;
   left: 0;
-  z-index: 5;
+  z-index: 5000;
   &::-webkit-scrollbar {
     width: 0.5rem;
   }

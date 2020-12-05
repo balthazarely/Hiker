@@ -26,11 +26,15 @@ export default function TrailsPage() {
   const location = useLocation();
   let coordinates = location.pathname.split("&").slice(1);
   let trailLocation = coordinates[2];
-
+  console.log(coordinates);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    fetchTrails();
+    if (coordinates.length === 0) {
+      console.log("not gonna fetch");
+    } else {
+      fetchTrails();
+    }
   }, []);
 
   const fetchTrails = (minDistance, maxDistance) => {
@@ -91,7 +95,6 @@ export default function TrailsPage() {
 
   // Get location
   const pathId = location.pathname.split("/")[2];
-  console.log(pathId);
 
   return (
     <Grid container>
@@ -176,7 +179,7 @@ export default function TrailsPage() {
                 trails={trails ? trailFiltered(trails) : null}
                 coordinates={coordinates}
                 className="map-wrapper"
-              />{" "}
+              />
             </motion.div>
           )}
         </Hidden>

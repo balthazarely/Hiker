@@ -27,7 +27,7 @@ export default function TrailMap({ trailInfo }) {
       <ReactMapGL
         {...viewport}
         mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_TOKEN}
-        mapStyle={"mapbox://styles/balthazarely/ckiay0icq07mr19mkcyx3f0ob"}
+        mapStyle={"mapbox://styles/balthazarely/ckg8fukiq14tk19mxrkt19zgv"}
         onViewportChange={(viewport) => {
           setViewport(viewport);
         }}
