@@ -1,28 +1,25 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-
 import {
   Container,
-  Button,
   CircularProgress,
   Grid,
   Typography,
+  Hidden,
 } from "@material-ui/core/";
 import { Link, useLocation } from "react-router-dom";
 
 //Components
-import DistanceSlider from "../components/LayoutComponents/sliders/DistanceSlider";
 import PageHeader from "../components/LayoutComponents/typography/PageHeader";
 import TrailCard from "../components/LayoutComponents/cards/TrailCard";
-import TrailsContainer from "../components/TrailPage/TrailsContainer";
 import GeneralSearchContainer from "../components/Search/GeneralSearchContainer";
-
+import AllTrailMap from "../components/LayoutComponents/maps/AllTrailMap";
 // Style
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { pageAnimation } from "../animation/animation";
 import { fetchTrailsFromSearch } from "../actions/TrailActions";
 import { convertToNum } from "../utility/utility";
-import TrailFilter from "../components/LayoutComponents/filter.jsx/TrailFilterContainer";
+import TrailFilter from "../components/LayoutComponents/filter/TrailFilterContainer";
 import SingleTrailModal from "../components/SingleTrailModal";
 
 export default function TrailsPage() {
@@ -51,8 +48,7 @@ export default function TrailsPage() {
   const { trails, city } = useSelector((state) => state.trail);
   const { loading } = useSelector((state) => state.async);
   // Slider Values
-  const [sliderValue, setSliderValue] = useState([0.5, 20]);
-  const [filterActive, setFilterActive] = useState(false);
+  const [sliderValue, setSliderValue] = useState([0.5, 30]);
   const [modalOpen, setModalOpen] = useState(false);
   //Dificulty filter
   const [radioValue, setRadioValue] = useState("");
@@ -60,100 +56,124 @@ export default function TrailsPage() {
     setRadioValue(event.target.value);
   };
 
-  const trailFiltered = (trail) => {
-    return trail;
-    // if (radioValue === "") {
-    //   let newTrails = trail;
-    //   console.log(newTrails);
-    //   return newTrails;
-    // } else if (radioValue === "easy") {
-    //   let newTrails = trail.filter((x) => {
-    //     x.difficulty === "green";
-    //   });
-    //   console.log(newTrails);
-    //   return newTrails;
-    // }
+  // Page results
+  const [buttonResults, setButtonResults] = useState(10);
+
+  const handleBtnChange = (value) => {
+    setButtonResults(value);
   };
 
+  // Dificulty Filter
+  const trailFiltered = (trail) => {
+    let filtertedTrail;
+    if (radioValue === "all") {
+      filtertedTrail = trail;
+    } else if (radioValue === "easy") {
+      filtertedTrail = trail.filter(
+        (x) =>
+          x.difficulty === "green" ||
+          x.difficulty === "greenBlue" ||
+          x.difficulty === "blue"
+      );
+    } else if (radioValue === "moderate") {
+      filtertedTrail = trail.filter((x) => x.difficulty === "blueBlack");
+    } else if (radioValue === "hard") {
+      filtertedTrail = trail.filter(
+        (x) => x.difficulty === "black" || x.difficulty === "dblack"
+      );
+    } else {
+      filtertedTrail = trail;
+    }
+    return filtertedTrail
+      .slice(0, buttonResults)
+      .filter((x) => x.length > sliderValue[0] && x.length < sliderValue[1]);
+  };
+
+  // Get location
+  const pathId = location.pathname.split("/")[2];
+  console.log(pathId);
+
   return (
-    <motion.div
-    // variants={pageAnimation}
-    // initial="hidden"
-    // animate="show"
-    // exit="exit"
-    >
-      <Container>
-        <div className="flex-end">
-          <GeneralSearchContainer />
-        </div>
-      </Container>
-      {modalOpen ? <SingleTrailModal setModalOpen={setModalOpen} /> : null}
-      <Container>
-        {loading ? (
-          <div
-            style={{
-              width: "100vw",
-              border: "2px solid red",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            <CircularProgress />
-          </div>
-        ) : (
-          <motion.div
-            variants={pageAnimation}
-            initial="hidden"
-            animate="show"
-            exit="exit"
-          >
+    <Grid container spacing={3}>
+      <Grid item md={8} xs={12} sm={12}>
+        <motion.div>
+          <Container>
+            <div className="flex-end">
+              <GeneralSearchContainer />
+            </div>
+          </Container>
+          <AnimatePresence>
+            {modalOpen ? (
+              <SingleTrailModal setModalOpen={setModalOpen} pathId={pathId} />
+            ) : null}
+          </AnimatePresence>
+          <Container>
             {loading ? (
-              <div style={{ border: "2px solid red" }}>
+              <div
+                style={{
+                  width: "100vw",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
                 <CircularProgress />
               </div>
             ) : (
-              <PageHeader marginTop="20px"> {city}</PageHeader>
+              <motion.div
+                variants={pageAnimation}
+                initial="hidden"
+                animate="show"
+                exit="exit"
+              >
+                {loading ? (
+                  <CircularProgress />
+                ) : (
+                  <div>
+                    <Typography variant="subtitle1" component="h4">
+                      {trails?.length} results
+                    </Typography>
+
+                    <PageHeader> {city}</PageHeader>
+                  </div>
+                )}
+                <TrailFilter
+                  sliderValue={sliderValue}
+                  setSliderValue={setSliderValue}
+                  handleRadioChange={handleRadioChange}
+                  buttonResults={buttonResults}
+                  handleBtnChange={handleBtnChange}
+                />
+                <Grid container justify="center" spacing={2}>
+                  {trails &&
+                    trailFiltered(trails).map((trailInfo) => {
+                      return (
+                        <TrailCard
+                          key={trailInfo.id}
+                          trailInfo={trailInfo}
+                          setModalOpen={setModalOpen}
+                        />
+                      );
+                    })}
+                </Grid>
+              </motion.div>
             )}
-
-            <Typography variant="subtitle1" component="h4">
-              {trails?.length} results
-            </Typography>
-
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={() => fetchTrails(sliderValue[0], sliderValue[1])}
-            >
-              Filter
-            </Button>
-            {radioValue}
-            <TrailFilter
-              sliderValue={sliderValue}
-              setSliderValue={setSliderValue}
-              handleRadioChange={handleRadioChange}
-              radioValue={radioValue}
+          </Container>
+        </motion.div>
+      </Grid>
+      <Grid item md={4} sm={12} xs={12}>
+        <Hidden smDown>
+          {loading ? (
+            <CircularProgress />
+          ) : (
+            <AllTrailMap
+              trails={trails ? trailFiltered(trails) : null}
+              coordinates={coordinates}
+              className="map-wrapper"
             />
-            <Grid container justify="center" spacing={2}>
-              {trails &&
-                trailFiltered(trails).map((trailInfo) => {
-                  return (
-                    <TrailCard
-                      key={trailInfo.id}
-                      trailInfo={trailInfo}
-                      setModalOpen={setModalOpen}
-                    />
-                  );
-                })}
-            </Grid>
-          </motion.div>
-        )}
-        {/* <Link to="/">
-          <Button variant="contained" color="primary">
-            back
-          </Button>
-        </Link> */}
-      </Container>
-    </motion.div>
+          )}
+        </Hidden>
+      </Grid>
+    </Grid>
   );
 }

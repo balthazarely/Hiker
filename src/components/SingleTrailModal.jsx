@@ -13,7 +13,8 @@ import Typography from "@material-ui/core/Typography";
 import styled from "styled-components";
 import { motion, AnimatePresence, AnimateSharedLayout } from "framer-motion";
 import { dispatch } from "rxjs/internal/observable/pairs";
-import TrailMap from "./ModalComponents/TrailMap";
+import TrailMap from "./LayoutComponents/maps/TrailMap";
+
 const useStyles = makeStyles({
   root: {
     minWidth: 275,
@@ -36,7 +37,7 @@ const useStyles = makeStyles({
   },
 });
 
-export default function SingleTrailModal({ setModalOpen }) {
+export default function SingleTrailModal({ setModalOpen, pathId }) {
   const { loadingSingle } = useSelector((state) => state.async);
 
   const exitDetailHandler = (e) => {
@@ -66,7 +67,7 @@ export default function SingleTrailModal({ setModalOpen }) {
   const classes = useStyles();
   return (
     <CardShadow className="shadow" onClick={exitDetailHandler}>
-      <Detail>
+      <Detail layoutId={pathId}>
         {loadingSingle ? (
           <LoadingContainer>
             <CircularProgress />

@@ -31,20 +31,39 @@ export default function Home() {
   }, []);
 
   return (
-    <motion.div
-      variants={pageAnimation}
-      initial="hidden"
-      animate="show"
-      exit="exit"
+    <div
+      style={{
+        height: "100vh",
+        backgroundImage: "url('MountainsBG.svg')",
+        backgroundRepeat: " no-repeat",
+        backgroundPosition: "center",
+        backgroundSize: "cover",
+      }}
     >
-      <Container>
-        <SearchContainer
-          setCoords={setCoords}
-          coords={coords}
-          setViewport={setViewport}
-        />
-        <TrailResults />
-      </Container>
-    </motion.div>
+      <motion.div
+        style={{
+          height: "100vh",
+        }}
+        variants={pageAnimation}
+        initial="hidden"
+        animate="show"
+        exit="exit"
+      >
+        {/* <div style={{ backgroundImage: "url('MountainsBG.svg')" }}>
+
+</div> */}
+        {/* <div style={{ backgroundImage: "url('mountains.jpg')" }}> */}
+        {/* <img src="mountains.jpg" /> */}
+        <Container>
+          <SearchContainer
+            setCoords={setCoords}
+            coords={coords}
+            setViewport={setViewport}
+          />
+          <TrailResults />
+        </Container>
+        {/* </div> */}
+      </motion.div>
+    </div>
   );
 }

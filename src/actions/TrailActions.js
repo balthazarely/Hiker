@@ -5,21 +5,20 @@ const PROXY_URL = "https://cors-anywhere.herokuapp.com/";
 export const fetchTrailsFromSearch = (
   lat,
   lng,
-  address,
-  minDistance = 0,
-  maxDistance = 30
+  address
+  // minDistance = 0,
+  // maxDistance = 30
 ) => async (dispatch) => {
   dispatch(asyncActionStart());
   const response = await fetch(
-    `https://www.hikingproject.com/data/get-trails?lat=${lat}&lon=${lng}&key=${apiKey}&maxResults=20`
+    `https://www.hikingproject.com/data/get-trails?lat=${lat}&lon=${lng}&key=${apiKey}&maxResults=50`
   );
   const json = await response.json();
   const filterArray = json.trails.filter(
-    (x) =>
-      x.stars >= 3 &&
-      x.type !== "Connector" &&
-      x.length < maxDistance &&
-      x.length > minDistance
+    (x) => x.stars >= 3 && x.type !== "Connector"
+    // &&
+    // x.length < maxDistance &&
+    // x.length > minDistance
   );
 
   console.log(json);

@@ -34,14 +34,16 @@ export default function TrailResults() {
       {loading ? (
         <CircularProgress />
       ) : (
-        <Grid container justify="center" spacing={2}>
-          {trailResults &&
-            trailResults.slice(0, 3).map((trailInfo) => {
-              return (
-                <TrailResultCard key={trailInfo.id} trailInfo={trailInfo} />
-              );
-            })}
-        </Grid>
+        <div>
+          <Grid container justify="center" spacing={2}>
+            {trailResults &&
+              trailResults.slice(0, 3).map((trailInfo) => {
+                return (
+                  <TrailResultCard key={trailInfo.id} trailInfo={trailInfo} />
+                );
+              })}
+          </Grid>
+        </div>
       )}
 
       {trailResults && (

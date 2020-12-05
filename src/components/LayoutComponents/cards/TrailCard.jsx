@@ -14,6 +14,7 @@ import { Rating } from "@material-ui/lab";
 import { fetchSingleTrailInfo } from "../../../actions/singleTrailAction";
 import { makeStyles } from "@material-ui/styles";
 import { motion } from "framer-motion";
+import { popUp } from "../../../animation/animation";
 
 const useStyles = makeStyles({
   root: {},
@@ -33,46 +34,48 @@ export default function TrailCard({ trailInfo, setModalOpen }) {
     setModalOpen(true);
   };
   return (
-    <Grid item xs={6} sm={6} md={3}>
+    <Grid item xs={6} sm={4} md={4} lg={3}>
       <motion.div initial="hidden" animate="show">
-        <Card className={classes.root}>
-          <CardActionArea onClick={handleCardClick}>
-            <CardMedia
-              className={classes.media}
-              image={trailInfo.imgSmall}
-              title="Contemplative Reptile"
-            />
-            <CardContent className={classes.contents}>
-              <Typography gutterBottom variant="h7" component="h2">
-                {trailInfo.name}
-              </Typography>
-              <Typography
-                gutterBottom
-                variant="subtitle2"
-                component="h2"
-                color="primary"
-              >
-                {trailInfo.length} Miles
-              </Typography>
-              <Rating
-                name="simple-controlled"
-                value={trailInfo.stars}
-                size="small"
+        <motion.div variants={popUp} initial="hidden" animate="show">
+          <Card className={classes.root}>
+            <CardActionArea onClick={handleCardClick}>
+              <CardMedia
+                className={classes.media}
+                image={trailInfo.imgSmall}
+                title="Contemplative Reptile"
               />
-              <Typography gutterBottom variant="body" component="body">
-                {trailInfo.summary}
-              </Typography>
-            </CardContent>
-          </CardActionArea>
-          <CardActions>
-            <Button size="small" color="primary">
-              Share
-            </Button>
-            <Button size="small" color="primary">
-              Learn More
-            </Button>
-          </CardActions>
-        </Card>
+              <CardContent className={classes.contents}>
+                <Typography gutterBottom variant="h7" component="h2">
+                  {trailInfo.name}
+                </Typography>
+                <Typography
+                  gutterBottom
+                  variant="subtitle2"
+                  component="h2"
+                  color="primary"
+                >
+                  {trailInfo.length} Miles
+                </Typography>
+                <Rating
+                  name="simple-controlled"
+                  value={trailInfo.stars}
+                  size="small"
+                />
+                <Typography gutterBottom variant="body" component="body">
+                  {trailInfo.summary}
+                </Typography>
+              </CardContent>
+            </CardActionArea>
+            <CardActions>
+              <Button size="small" color="primary">
+                Share
+              </Button>
+              <Button size="small" color="primary">
+                Learn More
+              </Button>
+            </CardActions>
+          </Card>
+        </motion.div>{" "}
       </motion.div>
     </Grid>
   );

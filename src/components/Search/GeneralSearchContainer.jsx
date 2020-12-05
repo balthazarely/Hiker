@@ -16,12 +16,12 @@ export default function GeneralSearchContainer() {
 
   return (
     <div
-      className="flex-center"
+      // className="flex-center"
       style={{
         height: "100px",
         // width: "100%",
-        border: "2px solid blue",
         width: "200px",
+
         // width: "50%",
         // position: "absolute",
         // top: 100,
@@ -29,10 +29,11 @@ export default function GeneralSearchContainer() {
       }}
     >
       <div
-        className="flex-center"
+        // className="flex-center"
         style={{
-          border: "2px solid red",
-
+          marginTop: "20px",
+          display: "flex",
+          flexDirection: "row",
           // position: "absolute",
           // top: 100,
           // right: 0,
