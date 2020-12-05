@@ -67,7 +67,9 @@ export default function SingleTrailModal({ setModalOpen, pathId }) {
   const classes = useStyles();
   return (
     <CardShadow className="shadow" onClick={exitDetailHandler}>
-      <Detail layoutId={pathId}>
+      <Detail
+      // layoutId={pathId}
+      >
         {loadingSingle ? (
           <LoadingContainer>
             <CircularProgress />

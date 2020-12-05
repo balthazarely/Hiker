@@ -2,8 +2,13 @@ import React, { useState } from "react";
 import ReactMapGL, { Marker, Popup } from "react-map-gl";
 import { useSelector } from "react-redux";
 import { convertToNum } from "../../../utility/utility";
+import FlagIcon from "@material-ui/icons/Flag";
 
 export default function EventMap({ trails, coordinates }) {
+  const [clickedTrail, setClickedTrail] = useState({});
+  //   const [showClickedTrail, setShowClickedTrail] = useState(false);
+  const [popUpOpen, setPopUpOpen] = useState(false);
+
   const [viewport, setViewport] = useState({
     latitude: convertToNum(coordinates[0]),
     longitude: convertToNum(coordinates[1]),
@@ -52,18 +57,29 @@ export default function EventMap({ trails, coordinates }) {
                         cursor: "pointer",
                         outline: "none",
                       }}
-                      //   onClick={(e) => {
-                      //     e.preventDefault();
-                      //     clickedMapEvent(event);
-                      //     setShowClickedMapEvent(true);
-                      //   }}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        setClickedTrail(trail);
+                        setPopUpOpen(true);
+                      }}
                     >
-                      <img src="beer.svg" alt="beer icon" />
+                      <FlagIcon color="primary" style={{ fontSize: 30 }} />
                     </button>
                   </Marker>
                 );
               }
             })}
+          {popUpOpen ? (
+            <Popup
+              latitude={clickedTrail.latitude}
+              longitude={clickedTrail.longitude}
+              onClose={() => {
+                setPopUpOpen(false);
+              }}
+            >
+              <h4>{clickedTrail.name}</h4>
+            </Popup>
+          ) : null}
         </ReactMapGL>
       ) : null}
     </div>

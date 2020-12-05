@@ -94,19 +94,19 @@ export default function TrailsPage() {
   console.log(pathId);
 
   return (
-    <Grid container spacing={3}>
+    <Grid container>
       <Grid item md={8} xs={12} sm={12}>
         <motion.div>
           <Container>
-            <div className="flex-end">
+            <div className="flex-end" style={{ marginTop: "70px" }}>
               <GeneralSearchContainer />
             </div>
           </Container>
-          <AnimatePresence>
-            {modalOpen ? (
-              <SingleTrailModal setModalOpen={setModalOpen} pathId={pathId} />
-            ) : null}
-          </AnimatePresence>
+          {/* <AnimatePresence> */}
+          {modalOpen ? (
+            <SingleTrailModal setModalOpen={setModalOpen} pathId={pathId} />
+          ) : null}
+          {/* </AnimatePresence> */}
           <Container>
             {loading ? (
               <div
@@ -166,11 +166,18 @@ export default function TrailsPage() {
           {loading ? (
             <CircularProgress />
           ) : (
-            <AllTrailMap
-              trails={trails ? trailFiltered(trails) : null}
-              coordinates={coordinates}
-              className="map-wrapper"
-            />
+            <motion.div
+              variants={pageAnimation}
+              initial="hidden"
+              animate="show"
+              exit="exit"
+            >
+              <AllTrailMap
+                trails={trails ? trailFiltered(trails) : null}
+                coordinates={coordinates}
+                className="map-wrapper"
+              />{" "}
+            </motion.div>
           )}
         </Hidden>
       </Grid>

@@ -68,14 +68,11 @@ export default function TrailCard({ trailInfo, setModalOpen }) {
             </CardActionArea>
             <CardActions>
               <Button size="small" color="primary">
-                Share
-              </Button>
-              <Button size="small" color="primary">
-                Learn More
+                Add To Favorites
               </Button>
             </CardActions>
           </Card>
-        </motion.div>{" "}
+        </motion.div>
       </motion.div>
     </Grid>
   );
