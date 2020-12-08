@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import clsx from "clsx";
+import { useSelector, useDispatch } from "react-redux";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import Drawer from "@material-ui/core/Drawer";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -8,7 +9,7 @@ import Toolbar from "@material-ui/core/Toolbar";
 import List from "@material-ui/core/List";
 import Typography from "@material-ui/core/Typography";
 import Divider from "@material-ui/core/Divider";
-import IconButton from "@material-ui/core/IconButton";
+import { IconButton, Button, Menu, MenuItem } from "@material-ui/core/";
 import MenuIcon from "@material-ui/icons/Menu";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
@@ -17,7 +18,9 @@ import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import InboxIcon from "@material-ui/icons/MoveToInbox";
 import MailIcon from "@material-ui/icons/Mail";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
+import AccountCircle from "@material-ui/icons/AccountCircle";
+import { signOutUser } from "../../../actions/authActions";
 
 const drawerWidth = 240;
 
@@ -81,7 +84,14 @@ const useStyles = makeStyles((theme) => ({
 export default function PersistentDrawerLeft() {
   const classes = useStyles();
   const theme = useTheme();
-  const [open, setOpen] = React.useState(false);
+  const history = useHistory();
+  const [open, setOpen] = useState(false);
+  const [auth, setAuth] = useState(true);
+  const { authenticated, currentUser } = useSelector((state) => state.auth);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const openMenu = Boolean(anchorEl);
+
+  const dispatch = useDispatch();
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -89,6 +99,14 @@ export default function PersistentDrawerLeft() {
 
   const handleDrawerClose = () => {
     setOpen(false);
+  };
+
+  const handleMenu = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
   };
 
   return (
@@ -100,7 +118,7 @@ export default function PersistentDrawerLeft() {
           [classes.appBarShift]: open,
         })}
       >
-        <Toolbar>
+        <Toolbar style={{ display: "flex", justifyContent: "space-between" }}>
           <IconButton
             color="inherit"
             aria-label="open drawer"
@@ -113,6 +131,53 @@ export default function PersistentDrawerLeft() {
           <Typography variant="h6" noWrap>
             Hiker
           </Typography>
+          {authenticated ? (
+            <div>
+              <IconButton
+                aria-label="account of current user"
+                aria-controls="menu-appbar"
+                aria-haspopup="true"
+                onClick={handleMenu}
+                color="inherit"
+              >
+                <AccountCircle />
+              </IconButton>
+              {currentUser.email}
+              <Menu
+                id="menu-appbar"
+                anchorEl={anchorEl}
+                anchorOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                open={openMenu}
+                onClose={handleClose}
+              ></Menu>
+              <Button
+                onClick={() => {
+                  dispatch(signOutUser());
+                  history.push("/login");
+                }}
+              >
+                LOGOUT
+              </Button>
+            </div>
+          ) : (
+            <Link to="/login">
+              <Button
+                variant="contained"
+                color="primary"
+                className={classes.btn}
+              >
+                Sign In
+              </Button>
+            </Link>
+          )}
         </Toolbar>
       </AppBar>
       <Drawer
@@ -136,7 +201,7 @@ export default function PersistentDrawerLeft() {
         <Divider />
         <List>
           <Link to="/">
-            <ListItem button key="search">
+            <ListItem button key="search" onClick={handleDrawerClose}>
               <ListItemIcon>
                 <InboxIcon />
               </ListItemIcon>
@@ -145,7 +210,7 @@ export default function PersistentDrawerLeft() {
           </Link>
 
           <Link to="/trails/&49.2827291&-123.1207375&Vancouver,%20BC,%20Canada">
-            <ListItem button key="trail">
+            <ListItem button key="trail" onClick={handleDrawerClose}>
               <ListItemIcon>
                 <InboxIcon />
               </ListItemIcon>
@@ -153,7 +218,7 @@ export default function PersistentDrawerLeft() {
             </ListItem>
           </Link>
           <Link to="/trails/&39.1910983&-106.8175387&Aspen,%20CO,%20USA">
-            <ListItem button key="trail2">
+            <ListItem button key="trail2" onClick={handleDrawerClose}>
               <ListItemIcon>
                 <InboxIcon />
               </ListItemIcon>
@@ -161,7 +226,7 @@ export default function PersistentDrawerLeft() {
             </ListItem>
           </Link>
           <Link to="/user">
-            <ListItem button key="user">
+            <ListItem button key="user" onClick={handleDrawerClose}>
               <ListItemIcon>
                 <InboxIcon />
               </ListItemIcon>
@@ -173,7 +238,7 @@ export default function PersistentDrawerLeft() {
         <Divider />
         <List>
           {["Login"].map((text, index) => (
-            <Link to="/">
+            <Link to="/login">
               <ListItem button key={text}>
                 <ListItemIcon>
                   {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}

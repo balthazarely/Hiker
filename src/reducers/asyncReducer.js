@@ -4,6 +4,7 @@ const ASYNC_ACTION_ERROR = "ASYNC_ACTION_ERROR";
 const ASYNC_SINGLE_TRAIL_ACTION_START = "ASYNC_SINGLE_TRAIL_ACTION_START";
 const ASYNC_SINGLE_TRAIL_ACTION_FINISH = "ASYNC_SINGLE_TRAIL_ACTION_FINISH";
 const ASYNC_SINGLE_TRAIL_ACTION_ERROR = "ASYNC_SINGLE_TRAIL_ACTION_ERROR";
+export const APP_LOADED = "APP_LOADED";
 
 export function asyncActionStart() {
   return {
@@ -43,6 +44,7 @@ const initialState = {
   loading: false,
   loadingSingle: false,
   error: null,
+  initalized: false,
 };
 
 export default function asyncReducer(state = initialState, { type, payload }) {
@@ -82,6 +84,12 @@ export default function asyncReducer(state = initialState, { type, payload }) {
         ...state,
         loadingSingle: false,
         error: payload,
+      };
+
+    case APP_LOADED:
+      return {
+        ...state,
+        initalized: true,
       };
 
     default:

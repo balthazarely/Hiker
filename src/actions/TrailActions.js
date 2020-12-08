@@ -2,16 +2,12 @@ import { asyncActionFinish, asyncActionStart } from "../reducers/asyncReducer";
 let apiKey = process.env.REACT_APP_HIKEPROJECT_API_KEY;
 const PROXY_URL = "https://cors-anywhere.herokuapp.com/";
 
-export const fetchTrailsFromSearch = (
-  lat,
-  lng,
-  address
-  // minDistance = 0,
-  // maxDistance = 30
-) => async (dispatch) => {
+export const fetchTrailsFromSearch = (lat, lng, address) => async (
+  dispatch
+) => {
   dispatch(asyncActionStart());
   const response = await fetch(
-    `https://www.hikingproject.com/data/get-trails?lat=${lat}&lon=${lng}&key=${apiKey}&maxResults=50`
+    `https://www.hikingproject.com/data/get-trails?lat=${lat}&lon=${lng}&key=${apiKey}&maxResults=12`
   );
   const json = await response.json();
   const filterArray = json.trails.filter(

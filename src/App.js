@@ -3,29 +3,43 @@ import { useSelector } from "react-redux";
 import Home from "./pages/Home";
 import { Route, Switch, useLocation } from "react-router-dom";
 import TrailsPage from "./pages/TrailsPage";
-import UserPage from "./pages/UserPage";
-import NavBar from "./components/NavBar";
+import Profile from "./pages/Profile";
+import LoginPage from "./pages/LoginPage";
+import RegisterPage from "./pages/RegisterPage";
 import { ThemeProvider } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import theme from "./themes/theme";
 import "./styles/app.scss";
 import { AnimatePresence, motion } from "framer-motion";
-import NavDrawer from "./components/LayoutComponents/drawer/NavDrawer";
+import Navbar from "./components/LayoutComponents/nav/Navbar";
+// import NavDrawer from "./components/LayoutComponents/drawer/NavDrawer";
+
 const App = () => {
-  const darkMode = useSelector((state) => state.theme.darkMode);
   const location = useLocation();
-  console.log(location);
+  const { currentUser } = useSelector((state) => state.auth);
+  const { initalized } = useSelector((state) => state.async);
+
+  if (!initalized) return <div>LOADING APP...</div>;
 
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <NavDrawer />
+      {/* <NavDrawer /> */}
+      <Navbar />
       <Route>
         <AnimatePresence exitBeforeEnter>
           <motion.div key={location.pathname} exit={{ opacity: 0 }}>
             <Switch location={location} key={location.pathname}>
-              <Route exact path="/user" component={UserPage} />
+              <Route exact path="/user" component={Profile} />
+              <Route exact path="/login" component={LoginPage} />
+              <Route exact path="/register" component={RegisterPage} />
               <Route exact path={["/trails/:id"]} component={TrailsPage} />
+              {/* <Route
+                exact
+                path={[`/profile/${currentUser.uid}`]}
+                component={Profile}
+              /> */}
+
               <Route exact path="/" component={Home} />
             </Switch>
           </motion.div>

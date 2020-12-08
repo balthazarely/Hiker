@@ -61,7 +61,7 @@ export default function TrailsPage() {
   };
 
   // Page results
-  const [buttonResults, setButtonResults] = useState(10);
+  const [buttonResults, setButtonResults] = useState(12);
 
   const handleBtnChange = (value) => {
     setButtonResults(value);

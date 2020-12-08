@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
 //Components
-import AppBar from "../components/NavBar";
 import SideDrawer from "../components/SideDrawer";
 import SearchContainer from "../components/Search/SearchContainer";
 import TrailResults from "../components/TrailResults";
