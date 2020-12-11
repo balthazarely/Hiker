@@ -31,7 +31,7 @@ export default function TrailsPage() {
   const location = useLocation();
   let coordinates = location.pathname.split("&").slice(1);
   let trailLocation = coordinates[2];
-  console.log(coordinates);
+  // console.log(coordinates);
   const dispatch = useDispatch();
   const { currentUser } = useSelector((state) => state.auth);
   const [favoriteTrailsFromFirebase, setFavoriteTrailsFromFirebase] = useState(
@@ -65,9 +65,9 @@ export default function TrailsPage() {
         // console.log(trails);
         setFavoriteTrailsFromFirebase(trails);
       },
-
       error: (error) => console.log(error),
     });
+
     return unsubscribe;
   }, []);
 
@@ -132,7 +132,7 @@ export default function TrailsPage() {
       .slice(0, buttonResults)
       .filter((x) => x.length > sliderValue[0] && x.length < sliderValue[1]);
   };
-
+  console.log(favoriteTrailsFromFirebase);
   // Get location
   const pathId = location.pathname.split("/")[2];
 
@@ -201,7 +201,6 @@ export default function TrailsPage() {
                     trailFiltered(trails).map((trailInfo) => {
                       return (
                         <TrailCard
-                          key={trailInfo.id}
                           trailInfo={trailInfo}
                           setModalOpen={setModalOpen}
                           favoriteTrailsFromFirebase={

@@ -14,7 +14,12 @@ import styled from "styled-components";
 import { motion, AnimatePresence, AnimateSharedLayout } from "framer-motion";
 import { dispatch } from "rxjs/internal/observable/pairs";
 import TrailMap from "./LayoutComponents/maps/TrailMap";
-import { favoriteTrail } from "../firestore/firestoreService";
+import {
+  dataFromSnapshot,
+  favoriteTrail,
+  getTrailsFromFirestore,
+  removeFavoriteTrailQuery,
+} from "../firestore/firestoreService";
 
 const useStyles = makeStyles({
   root: {
@@ -55,7 +60,7 @@ export default function SingleTrailModal({
 
   const trailInfo = useSelector((state) => state.singleTrail.singleTrail);
   // console.log(favoriteTrailsFromFirebase);
-  // console.log(trailInfo);
+  console.log(currentUser);
 
   const difficultyConverter = (str) => {
     switch (str) {
@@ -82,18 +87,19 @@ export default function SingleTrailModal({
   const [alreadyFav, setAlreadyFav] = useState(false);
 
   useEffect(() => {
-    const checkIfFavorite = () => {
-      favoriteTrailsFromFirebase.map((item) => {
-        if (item.trailId === trailInfo.id) {
-          console.log("WE HAVE A MATCH");
-          setAlreadyFav(true);
-        }
-      });
-    };
     if (trailInfo && trailInfo.id !== null) {
       checkIfFavorite();
     }
-  }, []);
+  });
+
+  const checkIfFavorite = () => {
+    favoriteTrailsFromFirebase.map((item) => {
+      if (item.trailId === trailInfo.id) {
+        console.log("WE HAVE A MATCH");
+        setAlreadyFav(true);
+      }
+    });
+  };
 
   const classes = useStyles();
   return (
@@ -135,18 +141,30 @@ export default function SingleTrailModal({
                 {trailInfo.location}
               </Typography>
               <br />
-              {/* {alreadyFav ? null : ( */}
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={() => favoriteTrail(trailInfo, currentUser.uid)}
-              >
-                Favorites
-              </Button>
-              <Button variant="contained" color="primary">
-                Delete
-              </Button>
-              {/* )} */}
+
+              {/* {alreadyFav ? (
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={() => {
+                    removeFavoriteTrailQuery(trailInfo.id, currentUser.uid);
+                    checkIfFavorite();
+                  }}
+                >
+                  Delete
+                </Button>
+              ) : (
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={() => {
+                    favoriteTrail(trailInfo, currentUser.uid);
+                    checkIfFavorite();
+                  }}
+                >
+                  Add to Favorites
+                </Button>
+              )} */}
 
               <Typography variant="subtitle2" component="subtitle2">
                 {trailInfo.length} Miles | Difficulty:

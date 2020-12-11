@@ -17,18 +17,32 @@ export function favoriteTrail(trail, userID) {
   });
 }
 
-export function removeFavoriteTrail(trailId, userID) {
+export function removeFavoriteTrail(docId, userID) {
   return db
     .collection("users")
     .doc(userID)
     .collection("favoriteTrails")
-    .doc(trailId)
+    .doc(docId)
     .delete()
     .then(function () {
       console.log("Document successfully deleted!");
     })
     .catch(function (error) {
       console.error("Error removing document: ", error);
+    });
+}
+
+export function removeFavoriteTrailQuery(trailId, userID) {
+  return db
+    .collection("users")
+    .doc(userID)
+    .collection("favoriteTrails")
+    .where("trailId", "==", trailId)
+    .get()
+    .then((querySnapshot) => {
+      querySnapshot.forEach((doc) => {
+        doc.ref.delete();
+      });
     });
 }
 

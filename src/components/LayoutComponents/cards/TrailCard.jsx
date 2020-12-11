@@ -7,9 +7,11 @@ import {
   CardContent,
   Typography,
   CardActions,
+  IconButton,
   Button,
   Grid,
 } from "@material-ui/core";
+import DeleteIcon from "@material-ui/icons/Delete";
 import { Rating } from "@material-ui/lab";
 import { fetchSingleTrailInfo } from "../../../actions/singleTrailAction";
 import { makeStyles } from "@material-ui/styles";
@@ -18,6 +20,7 @@ import { popUp } from "../../../animation/animation";
 import {
   favoriteTrail,
   getUserFavoriteTrails,
+  removeFavoriteTrailQuery,
 } from "../../../firestore/firestoreService";
 
 const useStyles = makeStyles({
@@ -45,6 +48,8 @@ export default function TrailCard({
     setModalOpen(true);
   };
 
+  console.log(favoriteTrailsFromFirebase);
+
   // const [userFavoriteTrails, setUserFavoriteTrails] = useState([]);
   // console.log(favoriteTrailsFromFirebase, "is is me");
   // const handleAddFavorite = (trailInfo, userId) => {
@@ -52,19 +57,18 @@ export default function TrailCard({
   //   favoriteTrail(trailInfo, userId);
   // };
 
-  // const [alreadyFav, setAlreadyFav] = useState(false);
+  const [alreadyFav, setAlreadyFav] = useState(false);
+  useEffect(() => {
+    checkIfFavorite();
+  }, [favoriteTrailsFromFirebase]);
 
-  // useEffect(() => {
-  //   const checkIfFavorite = () => {
-  //     favoriteTrailsFromFirebase.map((item) => {
-  //       if (item.trailId === trailInfo.id) {
-  //         console.log("WE HAVE A MATCH");
-  //         setAlreadyFav(true);
-  //       }
-  //     });
-  //   };
-  //   checkIfFavorite();
-  // }, [alreadyFav]);
+  const checkIfFavorite = () => {
+    favoriteTrailsFromFirebase.map((item) => {
+      if (item.trailId === trailInfo.id) {
+        setAlreadyFav(true);
+      }
+    });
+  };
 
   // useEffect(() => {
   //   getFavoriteTrailsFromFirebase();
@@ -112,16 +116,31 @@ export default function TrailCard({
                 </Typography>
               </CardContent>
             </CardActionArea>
-            {/* <CardActions>
-              <Button
-                size="small"
-                color="primary"
-                // disabled={alreadyFav ? true : false}
-                onClick={() => handleAddFavorite(trailInfo, currentUser.uid)}
-              >
-                Add To Favorites
-              </Button>
-            </CardActions> */}
+            <CardActions>
+              {alreadyFav ? (
+                <Button
+                  size="small"
+                  onClick={() => {
+                    removeFavoriteTrailQuery(trailInfo.id, currentUser.uid);
+                    checkIfFavorite();
+                  }}
+                >
+                  Remove From Favorites
+                </Button>
+              ) : (
+                <Button
+                  size="small"
+                  color="primary"
+                  // disabled={alreadyFav ? true : false}
+                  onClick={() => {
+                    favoriteTrail(trailInfo, currentUser.uid);
+                    checkIfFavorite();
+                  }}
+                >
+                  Add To Favorites
+                </Button>
+              )}
+            </CardActions>
           </Card>
         </motion.div>
       </motion.div>
