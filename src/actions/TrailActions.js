@@ -17,7 +17,6 @@ export const fetchTrailsFromSearch = (lat, lng, address) => async (
     // x.length > minDistance
   );
 
-  console.log(json);
   dispatch({
     type: "FETCH_TRAILS",
     payload: {

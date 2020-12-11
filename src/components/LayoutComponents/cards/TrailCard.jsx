@@ -1,5 +1,5 @@
-import React from "react";
-import { useDispatch } from "react-redux";
+import React, { useEffect, useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import {
   Card,
   CardActionArea,
@@ -15,6 +15,10 @@ import { fetchSingleTrailInfo } from "../../../actions/singleTrailAction";
 import { makeStyles } from "@material-ui/styles";
 import { motion } from "framer-motion";
 import { popUp } from "../../../animation/animation";
+import {
+  favoriteTrail,
+  getUserFavoriteTrails,
+} from "../../../firestore/firestoreService";
 
 const useStyles = makeStyles({
   root: {},
@@ -26,13 +30,51 @@ const useStyles = makeStyles({
   },
 });
 
-export default function TrailCard({ trailInfo, setModalOpen }) {
+export default function TrailCard({
+  trailInfo,
+  setModalOpen,
+  favoriteTrailsFromFirebase,
+}) {
   const classes = useStyles();
   const dispatch = useDispatch();
+  // const [addingTrail, setAddingTrails] = useState("");
+  const { currentUser } = useSelector((state) => state.auth);
+
   const handleCardClick = () => {
     dispatch(fetchSingleTrailInfo(trailInfo.id));
     setModalOpen(true);
   };
+
+  // const [userFavoriteTrails, setUserFavoriteTrails] = useState([]);
+  // console.log(favoriteTrailsFromFirebase, "is is me");
+  // const handleAddFavorite = (trailInfo, userId) => {
+  //   // setAddingTrails(trailInfo.name);
+  //   favoriteTrail(trailInfo, userId);
+  // };
+
+  // const [alreadyFav, setAlreadyFav] = useState(false);
+
+  // useEffect(() => {
+  //   const checkIfFavorite = () => {
+  //     favoriteTrailsFromFirebase.map((item) => {
+  //       if (item.trailId === trailInfo.id) {
+  //         console.log("WE HAVE A MATCH");
+  //         setAlreadyFav(true);
+  //       }
+  //     });
+  //   };
+  //   checkIfFavorite();
+  // }, [alreadyFav]);
+
+  // useEffect(() => {
+  //   getFavoriteTrailsFromFirebase();
+  // }, []);
+
+  // const getFavoriteTrailsFromFirebase = async () => {
+  //   let favTrails = await getUserFavoriteTrails(currentUser);
+  //   setUserFavoriteTrails(favTrails);
+  //   console.log(favTrails);
+  // };
 
   const textLimiter = (str) => {
     return str.length > 90 ? str.slice(0, 90) + "..." : str.slice(0, 90);
@@ -70,11 +112,16 @@ export default function TrailCard({ trailInfo, setModalOpen }) {
                 </Typography>
               </CardContent>
             </CardActionArea>
-            <CardActions>
-              <Button size="small" color="primary">
+            {/* <CardActions>
+              <Button
+                size="small"
+                color="primary"
+                // disabled={alreadyFav ? true : false}
+                onClick={() => handleAddFavorite(trailInfo, currentUser.uid)}
+              >
                 Add To Favorites
               </Button>
-            </CardActions>
+            </CardActions> */}
           </Card>
         </motion.div>
       </motion.div>

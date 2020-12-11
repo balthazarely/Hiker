@@ -21,6 +21,11 @@ import { fetchTrailsFromSearch } from "../actions/TrailActions";
 import { convertToNum } from "../utility/utility";
 import TrailFilter from "../components/LayoutComponents/filter/TrailFilterContainer";
 import SingleTrailModal from "../components/SingleTrailModal";
+import {
+  getUserFavoriteTrails,
+  dataFromSnapshot,
+  getTrailsFromFirestore,
+} from "../firestore/firestoreService";
 
 export default function TrailsPage() {
   const location = useLocation();
@@ -28,6 +33,10 @@ export default function TrailsPage() {
   let trailLocation = coordinates[2];
   console.log(coordinates);
   const dispatch = useDispatch();
+  const { currentUser } = useSelector((state) => state.auth);
+  const [favoriteTrailsFromFirebase, setFavoriteTrailsFromFirebase] = useState(
+    []
+  );
 
   useEffect(() => {
     if (coordinates.length === 0) {
@@ -48,6 +57,37 @@ export default function TrailsPage() {
       )
     );
   };
+
+  useEffect(() => {
+    const unsubscribe = getTrailsFromFirestore(currentUser.uid, {
+      next: (snapshot) => {
+        let trails = snapshot.docs.map((docSnap) => dataFromSnapshot(docSnap));
+        // console.log(trails);
+        setFavoriteTrailsFromFirebase(trails);
+      },
+
+      error: (error) => console.log(error),
+    });
+    return unsubscribe;
+  }, []);
+
+  // const [favoriteTrails, setFavoriteTrails] = useState([]);
+
+  // useEffect(() => {
+  //   getFavoritesFromFirebase();
+  // }, []);
+
+  // const getFavoritesFromFirebase = async () => {
+  //   const favorites = await getUserFavoriteTrails(currentUser);
+  //   // setFavoriteTrails(favorites);
+  //   console.log(favorites);
+  // };
+
+  // useEffect(() => {
+  //   const trails = getUserFavoriteTrails(currentUser);
+  //   console.log(trails);
+  //   return unsubscribe;
+  // });
 
   const { trails, city } = useSelector((state) => state.trail);
   const { loading } = useSelector((state) => state.async);
@@ -107,7 +147,11 @@ export default function TrailsPage() {
           </Container>
           {/* <AnimatePresence> */}
           {modalOpen ? (
-            <SingleTrailModal setModalOpen={setModalOpen} pathId={pathId} />
+            <SingleTrailModal
+              setModalOpen={setModalOpen}
+              pathId={pathId}
+              favoriteTrailsFromFirebase={favoriteTrailsFromFirebase}
+            />
           ) : null}
           {/* </AnimatePresence> */}
           <Container>
@@ -140,6 +184,7 @@ export default function TrailsPage() {
                     <PageHeader> {city}</PageHeader>
                   </div>
                 )}
+
                 <TrailFilter
                   sliderValue={sliderValue}
                   setSliderValue={setSliderValue}
@@ -147,6 +192,10 @@ export default function TrailsPage() {
                   buttonResults={buttonResults}
                   handleBtnChange={handleBtnChange}
                 />
+                {favoriteTrailsFromFirebase &&
+                  favoriteTrailsFromFirebase.map((trail) => {
+                    return <div>{trail.trailId}</div>;
+                  })}
                 <Grid container justify="center" spacing={2}>
                   {trails &&
                     trailFiltered(trails).map((trailInfo) => {
@@ -155,6 +204,9 @@ export default function TrailsPage() {
                           key={trailInfo.id}
                           trailInfo={trailInfo}
                           setModalOpen={setModalOpen}
+                          favoriteTrailsFromFirebase={
+                            favoriteTrailsFromFirebase
+                          }
                         />
                       );
                     })}

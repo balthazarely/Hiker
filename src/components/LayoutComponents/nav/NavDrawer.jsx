@@ -1,4 +1,5 @@
 import React from "react";
+import { useSelector } from "react-redux";
 import clsx from "clsx";
 import { makeStyles } from "@material-ui/core/styles";
 import Drawer from "@material-ui/core/Drawer";
@@ -50,7 +51,7 @@ export default function NavDrawer({ drawerOpen, setDrawerOpen }) {
             <ListItemText primary="trail2" />
           </ListItem>
         </Link>
-        <Link to="/user">
+        <Link to={`/profile`}>
           <ListItem button key="user">
             <ListItemIcon>
               <InboxIcon />

@@ -30,10 +30,10 @@ const App = () => {
         <AnimatePresence exitBeforeEnter>
           <motion.div key={location.pathname} exit={{ opacity: 0 }}>
             <Switch location={location} key={location.pathname}>
-              <Route exact path="/user" component={Profile} />
               <Route exact path="/login" component={LoginPage} />
               <Route exact path="/register" component={RegisterPage} />
               <Route exact path={["/trails/:id"]} component={TrailsPage} />
+              <Route exact path="/profile" component={Profile} />
               {/* <Route
                 exact
                 path={[`/profile/${currentUser.uid}`]}

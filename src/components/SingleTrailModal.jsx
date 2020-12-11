@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
 import { CircularProgress } from "@material-ui/core";
@@ -14,6 +14,7 @@ import styled from "styled-components";
 import { motion, AnimatePresence, AnimateSharedLayout } from "framer-motion";
 import { dispatch } from "rxjs/internal/observable/pairs";
 import TrailMap from "./LayoutComponents/maps/TrailMap";
+import { favoriteTrail } from "../firestore/firestoreService";
 
 const useStyles = makeStyles({
   root: {
@@ -37,8 +38,13 @@ const useStyles = makeStyles({
   },
 });
 
-export default function SingleTrailModal({ setModalOpen, pathId }) {
+export default function SingleTrailModal({
+  setModalOpen,
+  pathId,
+  favoriteTrailsFromFirebase,
+}) {
   const { loadingSingle } = useSelector((state) => state.async);
+  const { currentUser } = useSelector((state) => state.auth);
 
   const exitDetailHandler = (e) => {
     const element = e.target;
@@ -48,6 +54,8 @@ export default function SingleTrailModal({ setModalOpen, pathId }) {
   };
 
   const trailInfo = useSelector((state) => state.singleTrail.singleTrail);
+  // console.log(favoriteTrailsFromFirebase);
+  // console.log(trailInfo);
 
   const difficultyConverter = (str) => {
     switch (str) {
@@ -63,6 +71,29 @@ export default function SingleTrailModal({ setModalOpen, pathId }) {
         return " Very hard";
     }
   };
+
+  // const [userFavoriteTrails, setUserFavoriteTrails] = useState([]);
+  // console.log(favoriteTrailsFromFirebase, "is is me");
+  const handleAddFavorite = (trailInfo, userId) => {
+    // setAddingTrails(trailInfo.name);
+    // favoriteTrail(trailInfo, userId);
+  };
+
+  const [alreadyFav, setAlreadyFav] = useState(false);
+
+  useEffect(() => {
+    const checkIfFavorite = () => {
+      favoriteTrailsFromFirebase.map((item) => {
+        if (item.trailId === trailInfo.id) {
+          console.log("WE HAVE A MATCH");
+          setAlreadyFav(true);
+        }
+      });
+    };
+    if (trailInfo && trailInfo.id !== null) {
+      checkIfFavorite();
+    }
+  }, []);
 
   const classes = useStyles();
   return (
@@ -104,6 +135,19 @@ export default function SingleTrailModal({ setModalOpen, pathId }) {
                 {trailInfo.location}
               </Typography>
               <br />
+              {/* {alreadyFav ? null : ( */}
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={() => favoriteTrail(trailInfo, currentUser.uid)}
+              >
+                Favorites
+              </Button>
+              <Button variant="contained" color="primary">
+                Delete
+              </Button>
+              {/* )} */}
+
               <Typography variant="subtitle2" component="subtitle2">
                 {trailInfo.length} Miles | Difficulty:
                 {difficultyConverter(trailInfo.difficulty)}
