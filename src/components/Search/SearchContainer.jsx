@@ -2,12 +2,16 @@ import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchTrailsFromSearch } from "../../actions/TrailActions";
 import Search from "./Search";
-
 // Material UI
-import { IconButton } from "@material-ui/core";
+import { Button, IconButton } from "@material-ui/core";
+import MyLocationIcon from "@material-ui/icons/MyLocation";
 import ArrowDownwardIcon from "@material-ui/icons/ArrowDownward";
 
-export default function SearchContainer({ setCoords, coords, setViewport }) {
+export default function SearchContainer({
+  setCoords,
+  coords,
+  getUserGeoLocation,
+}) {
   const [address, setAddress] = useState("");
   const dispatch = useDispatch();
 
@@ -16,17 +20,42 @@ export default function SearchContainer({ setCoords, coords, setViewport }) {
   };
 
   return (
-    <div className="flex-center" style={{ height: "200px" }}>
-      <Search setCoords={setCoords} setAddress={setAddress} address={address} />
-      <IconButton
-        aria-label="delete"
-        onClick={() =>
-          dispatch(fetchTrailsFromSearch(coords.lat, coords.lng, address))
-        }
-        size="small"
+    <div>
+      <div
+        className="center"
+        style={{
+          height: "200px",
+          paddingTop: "150px",
+        }}
       >
-        <ArrowDownwardIcon fontSize="inherit" />
-      </IconButton>
+        <Search
+          setCoords={setCoords}
+          setAddress={setAddress}
+          address={address}
+          style={{ zIndex: 200000 }}
+        />
+        <div>
+          <Button
+            variant="contained"
+            color="primary"
+            style={{ marginLeft: "20px" }}
+            onClick={() =>
+              dispatch(fetchTrailsFromSearch(coords.lat, coords.lng, address))
+            }
+            size="small"
+          >
+            Search
+          </Button>
+          <IconButton
+            aria-label="delete"
+            variant="contained"
+            color="primary"
+            onClick={getUserGeoLocation}
+          >
+            <MyLocationIcon fontSize="small" />
+          </IconButton>
+        </div>
+      </div>
     </div>
   );
 }

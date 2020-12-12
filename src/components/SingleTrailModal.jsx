@@ -1,25 +1,14 @@
-import React, { useState, useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import React from "react";
+import { useSelector } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
-import { CircularProgress } from "@material-ui/core";
+import { CircularProgress, IconButton } from "@material-ui/core";
 import { Rating } from "@material-ui/lab";
+import CloseIcon from "@material-ui/icons/Close";
 import FavoriteIcon from "@material-ui/icons/Favorite";
-import { Card, CardMedia, Divider, CardActionArea } from "@material-ui/core";
-
-import CardActions from "@material-ui/core/CardActions";
-import CardContent from "@material-ui/core/CardContent";
-import Button from "@material-ui/core/Button";
-import Typography from "@material-ui/core/Typography";
+import { Card, CardMedia, CardContent, Typography } from "@material-ui/core";
 import styled from "styled-components";
-import { motion, AnimatePresence, AnimateSharedLayout } from "framer-motion";
-import { dispatch } from "rxjs/internal/observable/pairs";
+import { motion } from "framer-motion";
 import TrailMap from "./LayoutComponents/maps/TrailMap";
-import {
-  dataFromSnapshot,
-  favoriteTrail,
-  getTrailsFromFirestore,
-  removeFavoriteTrailQuery,
-} from "../firestore/firestoreService";
 
 const useStyles = makeStyles({
   root: {
@@ -43,13 +32,8 @@ const useStyles = makeStyles({
   },
 });
 
-export default function SingleTrailModal({
-  setModalOpen,
-  pathId,
-  favoriteTrailsFromFirebase,
-}) {
+export default function SingleTrailModal({ setModalOpen }) {
   const { loadingSingle } = useSelector((state) => state.async);
-  const { currentUser } = useSelector((state) => state.auth);
 
   const exitDetailHandler = (e) => {
     const element = e.target;
@@ -59,8 +43,6 @@ export default function SingleTrailModal({
   };
 
   const trailInfo = useSelector((state) => state.singleTrail.singleTrail);
-  // console.log(favoriteTrailsFromFirebase);
-  console.log(currentUser);
 
   const difficultyConverter = (str) => {
     switch (str) {
@@ -77,36 +59,10 @@ export default function SingleTrailModal({
     }
   };
 
-  // const [userFavoriteTrails, setUserFavoriteTrails] = useState([]);
-  // console.log(favoriteTrailsFromFirebase, "is is me");
-  const handleAddFavorite = (trailInfo, userId) => {
-    // setAddingTrails(trailInfo.name);
-    // favoriteTrail(trailInfo, userId);
-  };
-
-  const [alreadyFav, setAlreadyFav] = useState(false);
-
-  useEffect(() => {
-    if (trailInfo && trailInfo.id !== null) {
-      checkIfFavorite();
-    }
-  });
-
-  const checkIfFavorite = () => {
-    favoriteTrailsFromFirebase.map((item) => {
-      if (item.trailId === trailInfo.id) {
-        console.log("WE HAVE A MATCH");
-        setAlreadyFav(true);
-      }
-    });
-  };
-
   const classes = useStyles();
   return (
     <CardShadow className="shadow" onClick={exitDetailHandler}>
-      <Detail
-      // layoutId={pathId}
-      >
+      <Detail>
         {loadingSingle ? (
           <LoadingContainer>
             <CircularProgress />
@@ -118,6 +74,15 @@ export default function SingleTrailModal({
               image={trailInfo.imgMedium}
               title="Contemplative Reptile"
             />
+            <CloseWrapper>
+              <IconButton aria-label="delete" className={classes.margin}>
+                <CloseIcon
+                  fontSize="large"
+                  color="secondary"
+                  onClick={() => setModalOpen(false)}
+                />
+              </IconButton>
+            </CloseWrapper>
             {trailInfo.stars >= 4.6 ? (
               <IconWrapper>
                 <h4>RECOMMENDED TRAIL</h4>
@@ -126,7 +91,11 @@ export default function SingleTrailModal({
             ) : null}
             <CardContent>
               <CardHeader>
-                <Typography variant="h5" component="h5">
+                <Typography
+                  variant="h5"
+                  component="h5"
+                  style={{ fontWeight: 800 }}
+                >
                   {trailInfo.name}
                 </Typography>
                 <RatingWrapper>
@@ -142,31 +111,7 @@ export default function SingleTrailModal({
               </Typography>
               <br />
 
-              {/* {alreadyFav ? (
-                <Button
-                  variant="contained"
-                  color="primary"
-                  onClick={() => {
-                    removeFavoriteTrailQuery(trailInfo.id, currentUser.uid);
-                    checkIfFavorite();
-                  }}
-                >
-                  Delete
-                </Button>
-              ) : (
-                <Button
-                  variant="contained"
-                  color="primary"
-                  onClick={() => {
-                    favoriteTrail(trailInfo, currentUser.uid);
-                    checkIfFavorite();
-                  }}
-                >
-                  Add to Favorites
-                </Button>
-              )} */}
-
-              <Typography variant="subtitle2" component="subtitle2">
+              <Typography variant="subtitle1" component="subtitle1">
                 {trailInfo.length} Miles | Difficulty:
                 {difficultyConverter(trailInfo.difficulty)}
               </Typography>
@@ -297,6 +242,16 @@ const IconWrapper = styled(motion.div)`
     font-size: 12px;
   }
 `;
+
+const CloseWrapper = styled(motion.div)`
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding: 3px 8px;
+  border-radius: 6px;
+  margin: 12px;
+`;
+
 const MapContainer = styled(motion.div)`
   /* margin-top: 40px; */
 `;

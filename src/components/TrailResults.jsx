@@ -46,7 +46,7 @@ export default function TrailResults() {
         </div>
       )}
 
-      {trailResults && (
+      {coordinates?.latitude ? (
         <Link
           to={`trails/&${coordinates.latitude}&${coordinates.longitude}&${city}`}
         >
@@ -54,7 +54,7 @@ export default function TrailResults() {
             More results
           </Button>
         </Link>
-      )}
+      ) : null}
     </div>
   );
 }

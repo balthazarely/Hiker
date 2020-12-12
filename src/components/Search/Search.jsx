@@ -23,7 +23,10 @@ export default function Search({ setAddress, address, setCoords }) {
       value={address}
       onChange={handleChange}
       onSelect={handleSelect}
-      searchOptions={{ types: ["(cities)"] }}
+      searchOptions={{
+        types: ["(cities)"],
+        componentRestrictions: { country: "us" },
+      }}
     >
       {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
         <div>

@@ -59,6 +59,14 @@ export default function NavDrawer({ drawerOpen, setDrawerOpen }) {
             <ListItemText primary="user" />
           </ListItem>
         </Link>
+        <Link to={`/hikelog`}>
+          <ListItem button key="hikelog">
+            <ListItemIcon>
+              <InboxIcon />
+            </ListItemIcon>
+            <ListItemText primary="hikelog" />
+          </ListItem>
+        </Link>
       </List>
     </div>
   );

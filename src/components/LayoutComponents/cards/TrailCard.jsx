@@ -7,21 +7,15 @@ import {
   CardContent,
   Typography,
   CardActions,
-  IconButton,
   Button,
   Grid,
 } from "@material-ui/core";
-import DeleteIcon from "@material-ui/icons/Delete";
 import { Rating } from "@material-ui/lab";
 import { fetchSingleTrailInfo } from "../../../actions/singleTrailAction";
 import { makeStyles } from "@material-ui/styles";
 import { motion } from "framer-motion";
 import { popUp } from "../../../animation/animation";
-import {
-  favoriteTrail,
-  getUserFavoriteTrails,
-  removeFavoriteTrailQuery,
-} from "../../../firestore/firestoreService";
+import { favoriteTrail } from "../../../firestore/firestoreService";
 
 const useStyles = makeStyles({
   root: {},
@@ -30,6 +24,14 @@ const useStyles = makeStyles({
   },
   contents: {
     height: 190,
+  },
+  header: {
+    fontSize: "18px",
+    fontWeight: 800,
+    lineHeight: "20px",
+  },
+  subheader: {
+    fontSize: "12px",
   },
 });
 
@@ -40,27 +42,13 @@ export default function TrailCard({
 }) {
   const classes = useStyles();
   const dispatch = useDispatch();
-  // const [addingTrail, setAddingTrails] = useState("");
   const { currentUser } = useSelector((state) => state.auth);
+  const [alreadyFav, setAlreadyFav] = useState(false);
 
   const handleCardClick = () => {
     dispatch(fetchSingleTrailInfo(trailInfo.id));
     setModalOpen(true);
   };
-
-  console.log(favoriteTrailsFromFirebase);
-
-  // const [userFavoriteTrails, setUserFavoriteTrails] = useState([]);
-  // console.log(favoriteTrailsFromFirebase, "is is me");
-  // const handleAddFavorite = (trailInfo, userId) => {
-  //   // setAddingTrails(trailInfo.name);
-  //   favoriteTrail(trailInfo, userId);
-  // };
-
-  const [alreadyFav, setAlreadyFav] = useState(false);
-  useEffect(() => {
-    checkIfFavorite();
-  }, [favoriteTrailsFromFirebase]);
 
   const checkIfFavorite = () => {
     favoriteTrailsFromFirebase.map((item) => {
@@ -69,16 +57,9 @@ export default function TrailCard({
       }
     });
   };
-
-  // useEffect(() => {
-  //   getFavoriteTrailsFromFirebase();
-  // }, []);
-
-  // const getFavoriteTrailsFromFirebase = async () => {
-  //   let favTrails = await getUserFavoriteTrails(currentUser);
-  //   setUserFavoriteTrails(favTrails);
-  //   console.log(favTrails);
-  // };
+  useEffect(() => {
+    checkIfFavorite();
+  }, [favoriteTrailsFromFirebase]);
 
   const textLimiter = (str) => {
     return str.length > 90 ? str.slice(0, 90) + "..." : str.slice(0, 90);
@@ -95,7 +76,11 @@ export default function TrailCard({
                 title="Contemplative Reptile"
               />
               <CardContent className={classes.contents}>
-                <Typography gutterBottom variant="h7" component="h2">
+                <Typography
+                  gutterBottom
+                  className={classes.header}
+                  component="h2"
+                >
                   {trailInfo.name}
                 </Typography>
                 <Typography
@@ -111,35 +96,23 @@ export default function TrailCard({
                   value={trailInfo.stars}
                   size="small"
                 />
-                <Typography gutterBottom variant="body" component="body">
+                <Typography gutterBottom className={classes.subheader}>
                   {textLimiter(trailInfo.summary)}
                 </Typography>
               </CardContent>
             </CardActionArea>
             <CardActions>
-              {alreadyFav ? (
-                <Button
-                  size="small"
-                  onClick={() => {
-                    removeFavoriteTrailQuery(trailInfo.id, currentUser.uid);
-                    checkIfFavorite();
-                  }}
-                >
-                  Remove From Favorites
-                </Button>
-              ) : (
-                <Button
-                  size="small"
-                  color="primary"
-                  // disabled={alreadyFav ? true : false}
-                  onClick={() => {
-                    favoriteTrail(trailInfo, currentUser.uid);
-                    checkIfFavorite();
-                  }}
-                >
-                  Add To Favorites
-                </Button>
-              )}
+              <Button
+                size="small"
+                color="primary"
+                disabled={alreadyFav ? true : false}
+                onClick={() => {
+                  favoriteTrail(trailInfo, currentUser.uid);
+                  checkIfFavorite();
+                }}
+              >
+                Add To Favorites
+              </Button>
             </CardActions>
           </Card>
         </motion.div>

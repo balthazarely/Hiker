@@ -12,6 +12,7 @@ import theme from "./themes/theme";
 import "./styles/app.scss";
 import { AnimatePresence, motion } from "framer-motion";
 import Navbar from "./components/LayoutComponents/nav/Navbar";
+import HikeLog from "./pages/HikeLog";
 // import NavDrawer from "./components/LayoutComponents/drawer/NavDrawer";
 
 const App = () => {
@@ -34,6 +35,8 @@ const App = () => {
               <Route exact path="/register" component={RegisterPage} />
               <Route exact path={["/trails/:id"]} component={TrailsPage} />
               <Route exact path="/profile" component={Profile} />
+              <Route exact path="/hikelog" component={HikeLog} />
+
               {/* <Route
                 exact
                 path={[`/profile/${currentUser.uid}`]}

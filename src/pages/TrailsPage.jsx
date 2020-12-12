@@ -62,32 +62,12 @@ export default function TrailsPage() {
     const unsubscribe = getTrailsFromFirestore(currentUser.uid, {
       next: (snapshot) => {
         let trails = snapshot.docs.map((docSnap) => dataFromSnapshot(docSnap));
-        // console.log(trails);
         setFavoriteTrailsFromFirebase(trails);
       },
       error: (error) => console.log(error),
     });
-
     return unsubscribe;
   }, []);
-
-  // const [favoriteTrails, setFavoriteTrails] = useState([]);
-
-  // useEffect(() => {
-  //   getFavoritesFromFirebase();
-  // }, []);
-
-  // const getFavoritesFromFirebase = async () => {
-  //   const favorites = await getUserFavoriteTrails(currentUser);
-  //   // setFavoriteTrails(favorites);
-  //   console.log(favorites);
-  // };
-
-  // useEffect(() => {
-  //   const trails = getUserFavoriteTrails(currentUser);
-  //   console.log(trails);
-  //   return unsubscribe;
-  // });
 
   const { trails, city } = useSelector((state) => state.trail);
   const { loading } = useSelector((state) => state.async);
@@ -132,7 +112,6 @@ export default function TrailsPage() {
       .slice(0, buttonResults)
       .filter((x) => x.length > sliderValue[0] && x.length < sliderValue[1]);
   };
-  console.log(favoriteTrailsFromFirebase);
   // Get location
   const pathId = location.pathname.split("/")[2];
 
@@ -141,11 +120,10 @@ export default function TrailsPage() {
       <Grid item md={8} xs={12} sm={12}>
         <motion.div>
           <Container>
-            <div className="flex-end" style={{ marginTop: "70px" }}>
+            <div className="flex-end" style={{ marginTop: "100px" }}>
               <GeneralSearchContainer />
             </div>
           </Container>
-          {/* <AnimatePresence> */}
           {modalOpen ? (
             <SingleTrailModal
               setModalOpen={setModalOpen}
@@ -153,7 +131,6 @@ export default function TrailsPage() {
               favoriteTrailsFromFirebase={favoriteTrailsFromFirebase}
             />
           ) : null}
-          {/* </AnimatePresence> */}
           <Container>
             {loading ? (
               <div
@@ -192,15 +169,12 @@ export default function TrailsPage() {
                   buttonResults={buttonResults}
                   handleBtnChange={handleBtnChange}
                 />
-                {favoriteTrailsFromFirebase &&
-                  favoriteTrailsFromFirebase.map((trail) => {
-                    return <div>{trail.trailId}</div>;
-                  })}
                 <Grid container justify="center" spacing={2}>
                   {trails &&
                     trailFiltered(trails).map((trailInfo) => {
                       return (
                         <TrailCard
+                          key={trailInfo.id}
                           trailInfo={trailInfo}
                           setModalOpen={setModalOpen}
                           favoriteTrailsFromFirebase={
