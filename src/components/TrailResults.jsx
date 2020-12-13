@@ -12,7 +12,7 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: "column",
     alignItems: "center",
 
-    marginTop: "100px",
+    marginTop: "35px",
   },
   paper: {
     padding: theme.spacing(2),
@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
   },
   btn: {
     marginTop: 20,
-    border: "2px solid red",
+    // border: "2px solid red",
   },
 }));
 
@@ -50,6 +50,7 @@ export default function TrailResults() {
           <div className="center">
             {trailResults?.length > 0 && trailResults !== null ? (
               <Link
+                style={{ textDecoration: "none" }}
                 to={`trails/&${coordinates?.latitude}&${coordinates?.longitude}&${city}`}
               >
                 <Button

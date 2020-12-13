@@ -7,24 +7,27 @@ import {
 } from "../firestore/firestoreService";
 import styled from "styled-components";
 
-export default function ProfileInfo({ currentUser }) {
+export default function ProfileInfo({ currentUser, authenticated }) {
   const [hikeLogFromFirebase, setHikeLogFromFirebase] = useState([]);
   const [userStats, setUserStats] = useState({
     hikesCompleted: 2,
     totalDistance: 0,
   });
 
-  console.log(hikeLogFromFirebase.length);
   useEffect(() => {
-    const unsubscribe = getHikeLogFromFirestore(currentUser.uid, {
-      next: (snapshot) => {
-        let trails = snapshot.docs.map((docSnap) => dataFromSnapshot(docSnap));
-        setHikeLogFromFirebase(trails);
-        calcStats(trails);
-      },
-      error: (error) => console.log(error),
-    });
-    return unsubscribe;
+    if (authenticated) {
+      const unsubscribe = getHikeLogFromFirestore(currentUser.uid, {
+        next: (snapshot) => {
+          let trails = snapshot.docs.map((docSnap) =>
+            dataFromSnapshot(docSnap)
+          );
+          setHikeLogFromFirebase(trails);
+          calcStats(trails);
+        },
+        error: (error) => console.log(error),
+      });
+      return unsubscribe;
+    }
   }, []);
 
   function calcStats(trailData) {
@@ -50,7 +53,7 @@ export default function ProfileInfo({ currentUser }) {
       <Avatar
         alt="Remy Sharp"
         src="placeholder-person.jpg"
-        style={{ width: "200px", height: "200px", marginBottom: "20px" }}
+        style={{ width: "50px", height: "50px", marginBottom: "20px" }}
       />
 
       <Typography variant="h5" component="h4">

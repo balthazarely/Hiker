@@ -15,7 +15,7 @@ export default function EventMap({ trails, coordinates }) {
     longitude: coordinates.length > 0 ? convertToNum(coordinates[1]) : -105,
     width: "100%",
     height: "100%",
-    zoom: 11,
+    zoom: 9,
   });
 
   return (

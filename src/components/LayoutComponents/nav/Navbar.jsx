@@ -17,6 +17,15 @@ const useStyles = makeStyles((theme) => ({
   },
   menuButton: {
     marginRight: theme.spacing(2),
+    background: "white",
+    width: "75px",
+    height: "75px",
+    zIndex: 50000000,
+    marginTop: "12px",
+    "&:hover": {
+      background: "#07AEE9",
+      color: "white",
+    },
   },
   title: {
     flexGrow: 1,
@@ -40,39 +49,23 @@ export default function Navbar() {
 
   return (
     <div className={classes.root}>
-      <AppBar position="fixed">
+      <AppBar
+        position="fixed"
+        style={{ background: "transparent", boxShadow: "none" }}
+      >
         <Toolbar>
           <IconButton
             edge="start"
             className={classes.menuButton}
             color="inherit"
             aria-label="menu"
+            size="large"
             onClick={() => setDrawerOpen(true)}
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" className={classes.title}>
-            Hiker
-          </Typography>
-          {authenticated ? (
-            <div>
-              {currentUser.email}
-              <Link to="/login">
-                <Button onClick={handleSignOut} color="inherit">
-                  Logout
-                </Button>
-              </Link>
-            </div>
-          ) : (
-            <div>
-              <Link to="/login">
-                <Button color="inherit">Login</Button>
-              </Link>
-              <Link to="/register">
-                <Button color="inherit">Register</Button>
-              </Link>
-            </div>
-          )}
+          <Typography variant="h6" className={classes.title}></Typography>
+          {/* {authenticated ? <div>{currentUser.email}</div> : null} */}
         </Toolbar>
       </AppBar>
       <NavDrawer drawerOpen={drawerOpen} setDrawerOpen={setDrawerOpen} />

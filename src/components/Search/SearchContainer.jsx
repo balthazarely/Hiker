@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { fetchTrailsFromSearch } from "../../actions/TrailActions";
 import Search from "./Search";
 // Material UI
-import { Button, IconButton } from "@material-ui/core";
+import { Button, IconButton, Typography } from "@material-ui/core";
 import MyLocationIcon from "@material-ui/icons/MyLocation";
 import ArrowDownwardIcon from "@material-ui/icons/ArrowDownward";
 
@@ -25,7 +25,7 @@ export default function SearchContainer({
         className="center"
         style={{
           height: "200px",
-          paddingTop: "150px",
+          paddingTop: "50px",
         }}
       >
         <Search

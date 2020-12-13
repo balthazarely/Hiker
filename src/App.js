@@ -25,7 +25,6 @@ const App = () => {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      {/* <NavDrawer /> */}
       <Navbar />
       <Route>
         <AnimatePresence exitBeforeEnter>
@@ -36,13 +35,6 @@ const App = () => {
               <Route exact path={["/trails/:id"]} component={TrailsPage} />
               <Route exact path="/profile" component={Profile} />
               <Route exact path="/hikelog" component={HikeLog} />
-
-              {/* <Route
-                exact
-                path={[`/profile/${currentUser.uid}`]}
-                component={Profile}
-              /> */}
-
               <Route exact path="/" component={Home} />
             </Switch>
           </motion.div>

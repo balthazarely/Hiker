@@ -44,11 +44,12 @@ const useStyles = makeStyles({
 export default function TrailCard({
   trailInfo,
   setModalOpen,
+  authenticated,
   favoriteTrailsFromFirebase,
 }) {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const { currentUser } = useSelector((state) => state.auth);
+  const { currentUser } = useSelector((state) => state?.auth);
   const [alreadyFav, setAlreadyFav] = useState(false);
   const [openLogModal, setOpenLogModal] = useState(false);
   const [hikeDate, setHikeDate] = useState("");
@@ -66,7 +67,9 @@ export default function TrailCard({
     });
   };
   useEffect(() => {
-    checkIfFavorite();
+    if (authenticated) {
+      checkIfFavorite();
+    }
   }, [favoriteTrailsFromFirebase]);
 
   const textLimiter = (str) => {
@@ -128,27 +131,31 @@ export default function TrailCard({
               </CardContent>
             </CardActionArea>
             <CardActions>
-              <Button
-                size="small"
-                color="primary"
-                disabled={alreadyFav ? true : false}
-                onClick={() => {
-                  favoriteTrail(trailInfo, currentUser.uid);
-                  checkIfFavorite();
-                }}
-              >
-                Add To Favorites
-              </Button>
-              <Button
-                onClick={() => setOpenLogModal(true)}
-                variant="contained"
-                color="primary"
-                size="small"
-                // className={classes.button}
-                endIcon={<DirectionsWalkIcon />}
-              >
-                Log
-              </Button>
+              {authenticated && (
+                <div>
+                  <Button
+                    size="small"
+                    color="primary"
+                    disabled={alreadyFav ? true : false}
+                    onClick={() => {
+                      favoriteTrail(trailInfo, currentUser.uid);
+                      checkIfFavorite();
+                    }}
+                  >
+                    Add To Favorites
+                  </Button>
+                  <Button
+                    onClick={() => setOpenLogModal(true)}
+                    variant="contained"
+                    color="primary"
+                    size="small"
+                    // className={classes.button}
+                    endIcon={<DirectionsWalkIcon />}
+                  >
+                    Log
+                  </Button>
+                </div>
+              )}
             </CardActions>
           </Card>
         </motion.div>

@@ -11,6 +11,5 @@ export function configureStore() {
   );
 
   store.dispatch(varifyAuth());
-  console.log("store dispatching");
   return store;
 }

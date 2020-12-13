@@ -64,8 +64,8 @@ export default function Home() {
   return (
     <div
       style={{
-        height: "100vh",
-        backgroundImage: "url('MountainsBG.svg')",
+        height: "100%",
+        backgroundImage: "url('mountains-snow.jpg')",
         backgroundRepeat: " no-repeat",
         backgroundPosition: "center",
         backgroundSize: "cover",
@@ -81,6 +81,26 @@ export default function Home() {
         exit="exit"
       >
         <Container>
+          <Typography
+            component="h1"
+            variant="h4"
+            style={{
+              // height: "200px",
+              paddingTop: "100px",
+              textAlign: "center",
+            }}
+          >
+            Welcome to Hiker!
+          </Typography>
+          <Typography
+            component="h1"
+            variant="subtitle1"
+            style={{
+              textAlign: "center",
+            }}
+          >
+            To start, search a city
+          </Typography>
           <SearchContainer
             setCoords={setCoords}
             coords={coords}
@@ -117,8 +137,6 @@ export default function Home() {
           </div>
         </Container>
       </motion.div>
-      {geoLocation.city} {geoCoords.latitude} {geoCoords.longitude}
-      {geoLoading ? "true" : "false"}
     </div>
   );
 }

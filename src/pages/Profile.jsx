@@ -52,33 +52,42 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Profile() {
   const [modalOpen, setModalOpen] = useState(false);
+  const { authenticated } = useSelector((state) => state?.auth);
 
-  const { currentUser } = useSelector((state) => state.auth);
+  const { currentUser } = useSelector((state) => state?.auth);
   const [favoriteTrailsFromFirebase, setFavoriteTrailsFromFirebase] = useState(
     []
   );
   const [hikeLogFromFirebase, setHikeLogFromFirebase] = useState([]);
 
   useEffect(() => {
-    const unsubscribe = getTrailsFromFirestore(currentUser.uid, {
-      next: (snapshot) => {
-        let trails = snapshot.docs.map((docSnap) => dataFromSnapshot(docSnap));
-        setFavoriteTrailsFromFirebase(trails);
-      },
-      error: (error) => console.log(error),
-    });
-    return unsubscribe;
+    if (authenticated) {
+      const unsubscribe = getTrailsFromFirestore(currentUser.uid, {
+        next: (snapshot) => {
+          let trails = snapshot.docs.map((docSnap) =>
+            dataFromSnapshot(docSnap)
+          );
+          setFavoriteTrailsFromFirebase(trails);
+        },
+        error: (error) => console.log(error),
+      });
+      return unsubscribe;
+    }
   }, []);
 
   useEffect(() => {
-    const unsubscribe = getHikeLogFromFirestore(currentUser.uid, {
-      next: (snapshot) => {
-        let trails = snapshot.docs.map((docSnap) => dataFromSnapshot(docSnap));
-        setHikeLogFromFirebase(trails);
-      },
-      error: (error) => console.log(error),
-    });
-    return unsubscribe;
+    if (authenticated) {
+      const unsubscribe = getHikeLogFromFirestore(currentUser.uid, {
+        next: (snapshot) => {
+          let trails = snapshot.docs.map((docSnap) =>
+            dataFromSnapshot(docSnap)
+          );
+          setHikeLogFromFirebase(trails);
+        },
+        error: (error) => console.log(error),
+      });
+      return unsubscribe;
+    }
   }, []);
 
   ////TABS
@@ -119,9 +128,7 @@ export default function Profile() {
   const numberOfPages = Math.ceil(
     favoriteTrailsFromFirebase.length / itemsPerPage
   );
-  console.log(numberOfPages);
   const [page, setPage] = React.useState(1);
-  const [noOfPages, setNoOfPage] = useState(numberOfPages);
 
   const handleChangePagingation = (event, value) => {
     setPage(value);
@@ -147,63 +154,99 @@ export default function Profile() {
                 animate="show"
                 exit="exit"
               >
-                <ProfileInfo currentUser={currentUser} />
+                <ProfileInfo
+                  currentUser={currentUser}
+                  authenticated={authenticated}
+                />
               </motion.div>
             </Container>
           </motion.div>
         </Grid>
+
         <Grid item md={8} sm={12} xs={12}>
-          <Container>
-            <Paper square>
-              <Tabs
-                value={value}
-                onChange={handleChange}
-                variant="fullWidth"
-                indicatorColor="primary"
-                textColor="primary"
-                aria-label="icon label tabs example"
+          <motion.div
+            variants={pageAnimation}
+            initial="hidden"
+            animate="show"
+            exit="exit"
+          >
+            {authenticated ? (
+              <Container>
+                <Paper square>
+                  <Tabs
+                    value={value}
+                    onChange={handleChange}
+                    variant="fullWidth"
+                    indicatorColor="primary"
+                    textColor="primary"
+                    aria-label="icon label tabs example"
+                  >
+                    <Tab
+                      icon={<PhoneIcon color="primary" />}
+                      label="FAVORITES"
+                    />
+                    <Tab icon={<FavoriteIcon color="primary" />} label="LOG" />
+                  </Tabs>
+                </Paper>
+
+                <TabPanel value={value} index={0}>
+                  {favoriteTrailsFromFirebase &&
+                    favoriteTrailsFromFirebase
+                      .slice((page - 1) * itemsPerPage, page * itemsPerPage)
+                      .map((trail) => {
+                        return (
+                          <ProfileTrailCard
+                            key={trail.trailId}
+                            trail={trail}
+                            currentUser={currentUser}
+                            removeFavoriteTrail={removeFavoriteTrail}
+                            setModalOpen={setModalOpen}
+                          />
+                        );
+                      })}
+
+                  <PaginationWrapper>
+                    <Pagination
+                      count={numberOfPages}
+                      page={page}
+                      onChange={handleChangePagingation}
+                      defaultPage={1}
+                      color="primary"
+                      size="medium"
+                      classes={{ ul: classes.paginator }}
+                    />
+                  </PaginationWrapper>
+                </TabPanel>
+                <TabPanel value={value} index={1}>
+                  {hikeLogFromFirebase &&
+                    hikeLogFromFirebase.map((hike) => {
+                      return (
+                        <HikeLogCard trail={hike} currentUser={currentUser} />
+                      );
+                    })}
+                </TabPanel>
+              </Container>
+            ) : (
+              <Container
+                style={{
+                  height: "40vh",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  textAlign: "center",
+                }}
               >
-                <Tab icon={<PhoneIcon color="primary" />} label="FAVORITES" />
-                <Tab icon={<FavoriteIcon color="primary" />} label="LOG" />
-              </Tabs>
-            </Paper>
-            <TabPanel value={value} index={0}>
-              {/* HERE IS WHERE THE LIST IS */}
-
-              {favoriteTrailsFromFirebase &&
-                favoriteTrailsFromFirebase
-                  .slice((page - 1) * itemsPerPage, page * itemsPerPage)
-
-                  .map((trail) => {
-                    return (
-                      <ProfileTrailCard
-                        key={trail.trailId}
-                        trail={trail}
-                        currentUser={currentUser}
-                        removeFavoriteTrail={removeFavoriteTrail}
-                        setModalOpen={setModalOpen}
-                      />
-                    );
-                  })}
-              <PaginationWrapper>
-                <Pagination
-                  count={numberOfPages}
-                  page={page}
-                  onChange={handleChangePagingation}
-                  defaultPage={1}
-                  color="primary"
-                  size="medium"
-                  classes={{ ul: classes.paginator }}
-                />
-              </PaginationWrapper>
-            </TabPanel>
-            <TabPanel value={value} index={1}>
-              {hikeLogFromFirebase &&
-                hikeLogFromFirebase.map((hike) => {
-                  return <HikeLogCard trail={hike} currentUser={currentUser} />;
-                })}
-            </TabPanel>
-          </Container>
+                <Typography
+                  // gutterBottom
+                  variant="h4"
+                  component="h2"
+                  color="rgb(100,100,100)"
+                >
+                  Please login or register to access account data
+                </Typography>
+              </Container>
+            )}
+          </motion.div>
         </Grid>
       </Grid>
     </Container>

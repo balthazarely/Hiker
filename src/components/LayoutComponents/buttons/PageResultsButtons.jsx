@@ -23,17 +23,17 @@ export default function PageResultsButtons({ buttonResults, handleBtnChange }) {
         disableElevation
         onClick={() => handleBtnChange(20)}
       >
-        25
+        20
       </Button>
       <Button
-        variant={buttonResults === 50 ? "contained" : "outlined"}
+        variant={buttonResults === 30 ? "contained" : "outlined"}
         size="small"
         color="primary"
         value="50"
         disableElevation
         onClick={() => handleBtnChange(50)}
       >
-        50
+        30
       </Button>
     </div>
   );

@@ -33,7 +33,8 @@ export default function TrailsPage() {
   let trailLocation = coordinates[2];
   // console.log(coordinates);
   const dispatch = useDispatch();
-  const { currentUser } = useSelector((state) => state.auth);
+  const { currentUser } = useSelector((state) => state?.auth);
+  const { authenticated } = useSelector((state) => state?.auth);
   const [favoriteTrailsFromFirebase, setFavoriteTrailsFromFirebase] = useState(
     []
   );
@@ -59,14 +60,18 @@ export default function TrailsPage() {
   };
 
   useEffect(() => {
-    const unsubscribe = getTrailsFromFirestore(currentUser.uid, {
-      next: (snapshot) => {
-        let trails = snapshot.docs.map((docSnap) => dataFromSnapshot(docSnap));
-        setFavoriteTrailsFromFirebase(trails);
-      },
-      error: (error) => console.log(error),
-    });
-    return unsubscribe;
+    if (authenticated) {
+      const unsubscribe = getTrailsFromFirestore(currentUser.uid, {
+        next: (snapshot) => {
+          let trails = snapshot.docs.map((docSnap) =>
+            dataFromSnapshot(docSnap)
+          );
+          setFavoriteTrailsFromFirebase(trails);
+        },
+        error: (error) => console.log(error),
+      });
+      return unsubscribe;
+    }
   }, []);
 
   const { trails, city } = useSelector((state) => state.trail);
@@ -183,6 +188,7 @@ export default function TrailsPage() {
                           favoriteTrailsFromFirebase={
                             favoriteTrailsFromFirebase
                           }
+                          authenticated={authenticated}
                         />
                       );
                     })}
@@ -194,9 +200,8 @@ export default function TrailsPage() {
       </Grid>
       <Grid item md={4} sm={12} xs={12}>
         <Hidden smDown>
-          {loading ? (
-            <CircularProgress />
-          ) : (
+          {loading ? // <CircularProgress />
+          null : (
             <motion.div
               variants={pageAnimation}
               initial="hidden"
