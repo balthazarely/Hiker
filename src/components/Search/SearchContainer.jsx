@@ -13,11 +13,11 @@ export default function SearchContainer({
   getUserGeoLocation,
 }) {
   const [address, setAddress] = useState("");
+  const [searchQ, setSearchQ] = useState("");
+
   const dispatch = useDispatch();
 
-  const formatAddress = (address) => {
-    return address.split(",")[0];
-  };
+  console.log(coords);
 
   return (
     <div>
@@ -29,23 +29,26 @@ export default function SearchContainer({
         }}
       >
         <Search
+          setSearchQ={setSearchQ}
           setCoords={setCoords}
           setAddress={setAddress}
           address={address}
           style={{ zIndex: 200000 }}
         />
         <div>
-          <Button
-            variant="contained"
-            color="primary"
-            style={{ marginLeft: "20px" }}
-            onClick={() =>
-              dispatch(fetchTrailsFromSearch(coords.lat, coords.lng, address))
-            }
-            size="small"
-          >
-            Search
-          </Button>
+          {searchQ && (
+            <Button
+              variant="contained"
+              color="primary"
+              style={{ marginLeft: "20px" }}
+              onClick={() =>
+                dispatch(fetchTrailsFromSearch(coords.lat, coords.lng, address))
+              }
+              size="small"
+            >
+              Search
+            </Button>
+          )}
           <IconButton
             aria-label="delete"
             variant="contained"

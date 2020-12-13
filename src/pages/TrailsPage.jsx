@@ -121,9 +121,10 @@ export default function TrailsPage() {
         <motion.div>
           <Container>
             <div className="flex-end" style={{ marginTop: "100px" }}>
-              <GeneralSearchContainer />
+              {loading ? null : <GeneralSearchContainer />}
             </div>
           </Container>
+
           {modalOpen ? (
             <SingleTrailModal
               setModalOpen={setModalOpen}
@@ -131,11 +132,13 @@ export default function TrailsPage() {
               favoriteTrailsFromFirebase={favoriteTrailsFromFirebase}
             />
           ) : null}
+
           <Container>
             {loading ? (
               <div
                 style={{
                   width: "100vw",
+                  height: "40vh",
                   display: "flex",
                   justifyContent: "center",
                   alignItems: "center",

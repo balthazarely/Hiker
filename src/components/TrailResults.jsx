@@ -11,6 +11,8 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
+
+    marginTop: "100px",
   },
   paper: {
     padding: theme.spacing(2),
@@ -19,6 +21,7 @@ const useStyles = makeStyles((theme) => ({
   },
   btn: {
     marginTop: 20,
+    border: "2px solid red",
   },
 }));
 
@@ -29,6 +32,7 @@ export default function TrailResults() {
   const city = useSelector((state) => state.trail.city);
   const { loading } = useSelector((state) => state.async);
 
+  console.log(city);
   return (
     <div className={classes.root}>
       {loading ? (
@@ -43,18 +47,23 @@ export default function TrailResults() {
                 );
               })}
           </Grid>
+          <div className="center">
+            {trailResults?.length > 0 && trailResults !== null ? (
+              <Link
+                to={`trails/&${coordinates?.latitude}&${coordinates?.longitude}&${city}`}
+              >
+                <Button
+                  variant="contained"
+                  color="primary"
+                  className={classes.btn}
+                >
+                  More results
+                </Button>
+              </Link>
+            ) : null}
+          </div>
         </div>
       )}
-
-      {coordinates?.latitude ? (
-        <Link
-          to={`trails/&${coordinates.latitude}&${coordinates.longitude}&${city}`}
-        >
-          <Button variant="contained" color="primary" className={classes.btn}>
-            More results
-          </Button>
-        </Link>
-      ) : null}
     </div>
   );
 }

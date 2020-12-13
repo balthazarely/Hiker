@@ -5,15 +5,15 @@ import Search from "./Search";
 import { Link } from "react-router-dom";
 
 // Material UI
-import { IconButton } from "@material-ui/core";
+import { Button } from "@material-ui/core";
 import ArrowDownwardIcon from "@material-ui/icons/ArrowDownward";
 import GeneralSearch from "./GeneralSearch";
 
 export default function GeneralSearchContainer() {
   const [coords, setCoords] = useState({});
   const [address, setAddress] = useState("");
+  const [searchQ, setSearchQ] = useState("");
   const dispatch = useDispatch();
-
   return (
     <div
       // className="flex-center"
@@ -43,18 +43,15 @@ export default function GeneralSearchContainer() {
           setCoords={setCoords}
           setAddress={setAddress}
           address={address}
+          setSearchQ={setSearchQ}
         />
 
         <Link to={`/trails/&${coords.lat}&${coords.lng}&${address}`}>
-          <IconButton
-            aria-label="delete"
-            // onClick={() =>
-            //   dispatch(fetchTrailsFromSearch(coords.lat, coords.lng, address))
-            // }
-            size="small"
-          >
-            <ArrowDownwardIcon fontSize="inherit" />
-          </IconButton>
+          {searchQ ? (
+            <Button variant="contained" color="primary" size="small">
+              Search
+            </Button>
+          ) : null}
         </Link>
       </div>
     </div>

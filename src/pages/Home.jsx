@@ -20,13 +20,6 @@ import GetUserLocation from "../components/GetUserLocation";
 export default function Home() {
   const [location, setLocation] = useState({ city: "", state: "" });
   const [coords, setCoords] = useState({});
-  const [viewport, setViewport] = useState({
-    latitude: 40.015,
-    longitude: -105.2705,
-    width: "100%",
-    height: "100%",
-    zoom: 12,
-  });
 
   const [geoCoords, setGeoCoords] = useState({});
   const [geoLocation, setGeoLocation] = useState({ city: "", state: "" });

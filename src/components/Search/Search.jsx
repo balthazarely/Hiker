@@ -6,13 +6,17 @@ import PlacesAutocomplete, {
 } from "react-places-autocomplete";
 import { TextField } from "@material-ui/core/";
 
-export default function Search({ setAddress, address, setCoords }) {
+export default function Search({ setAddress, address, setCoords, setSearchQ }) {
   const handleChange = (address) => {
     setAddress(address);
+    if (address === "") {
+      setSearchQ("");
+    }
   };
 
   const handleSelect = async (address) => {
     setAddress(address);
+    setSearchQ(address);
     const results = await geocodeByAddress(address);
     const latLng = await getLatLng(results[0]);
     setCoords(latLng);
