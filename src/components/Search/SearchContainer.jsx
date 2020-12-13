@@ -1,23 +1,20 @@
 import React, { useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { fetchTrailsFromSearch } from "../../actions/TrailActions";
 import Search from "./Search";
-// Material UI
-import { Button, IconButton, Typography } from "@material-ui/core";
+
+// Styles
+import { Button, IconButton } from "@material-ui/core";
 import MyLocationIcon from "@material-ui/icons/MyLocation";
-import ArrowDownwardIcon from "@material-ui/icons/ArrowDownward";
 
 export default function SearchContainer({
   setCoords,
   coords,
   getUserGeoLocation,
 }) {
+  const dispatch = useDispatch();
   const [address, setAddress] = useState("");
   const [searchQ, setSearchQ] = useState("");
-
-  const dispatch = useDispatch();
-
-  console.log(coords);
 
   return (
     <div>
@@ -41,9 +38,13 @@ export default function SearchContainer({
               variant="contained"
               color="primary"
               style={{ marginLeft: "20px" }}
-              onClick={() =>
-                dispatch(fetchTrailsFromSearch(coords.lat, coords.lng, address))
-              }
+              onClick={() => {
+                if ((coords.lat, coords.lng, address)) {
+                  dispatch(
+                    fetchTrailsFromSearch(coords.lat, coords.lng, address)
+                  );
+                }
+              }}
               size="small"
             >
               Search

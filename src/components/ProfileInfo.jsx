@@ -30,22 +30,15 @@ export default function ProfileInfo({ currentUser, authenticated }) {
     }
   }, []);
 
-  function calcStats(trailData) {
-    // let hikeNumber = trailData.length;
-    // console.log(hikeNumber);
-    // setUserStats({ hikesCompleted: hikeNumber });
+  function roundDown(num) {
+    return num.toFixed(2);
+  }
 
+  function calcStats(trailData) {
     let calcDistance = trailData.reduce(function (acc, obj) {
       return acc + obj.length;
     }, 0);
     setUserStats({ totalDistance: calcDistance });
-
-    //   let distance = 0;
-    //   let hikesCompleted = 0;
-    //   hikeLogFromFirebase.map((trail) => {
-    //     distance = trail.length + distance;
-    //   });
-    //   setUserStats({ distanceHiked: distance });
   }
 
   return (
@@ -69,7 +62,7 @@ export default function ProfileInfo({ currentUser, authenticated }) {
           color="primary"
           style={{ fontSize: "26px" }}
         >
-          {userStats.totalDistance}
+          {roundDown(userStats.totalDistance)}
           <span style={{ fontSize: "16px" }}> miles</span>
         </Typography>
 

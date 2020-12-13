@@ -21,7 +21,6 @@ const useStyles = makeStyles((theme) => ({
   },
   btn: {
     marginTop: 20,
-    // border: "2px solid red",
   },
 }));
 
@@ -32,7 +31,6 @@ export default function TrailResults() {
   const city = useSelector((state) => state.trail.city);
   const { loading } = useSelector((state) => state.async);
 
-  console.log(city);
   return (
     <div className={classes.root}>
       {loading ? (
@@ -61,6 +59,9 @@ export default function TrailResults() {
                   More results
                 </Button>
               </Link>
+            ) : null}
+            {city && trailResults.length == 0 ? (
+              <h3>Looks like there are no results</h3>
             ) : null}
           </div>
         </div>

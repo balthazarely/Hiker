@@ -132,7 +132,14 @@ export default function TrailCard({
             </CardActionArea>
             <CardActions>
               {authenticated && (
-                <div>
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                    width: "100%",
+                  }}
+                >
                   <Button
                     size="small"
                     color="primary"
@@ -142,14 +149,13 @@ export default function TrailCard({
                       checkIfFavorite();
                     }}
                   >
-                    Add To Favorites
+                    Add Favorite
                   </Button>
                   <Button
                     onClick={() => setOpenLogModal(true)}
                     variant="contained"
                     color="primary"
                     size="small"
-                    // className={classes.button}
                     endIcon={<DirectionsWalkIcon />}
                   >
                     Log

@@ -72,6 +72,18 @@ export default function NavDrawer({ drawerOpen, setDrawerOpen }) {
             <ListItemText style={textStyle} primary="Denver Trails" />
           </ListItem>
         </Link>
+        <Link
+          style={linkStyle}
+          to="/trails/&47.6062095&-122.3320708&Seattle,%20WA,%20USA"
+        >
+          <ListItem button onClick={() => setDrawerOpen(false)} key="trail2">
+            <ListItemIcon>
+              <LocationCityIcon />
+            </ListItemIcon>
+            <ListItemText style={textStyle} primary="Seattle Trails" />
+          </ListItem>
+        </Link>
+
         <Link style={linkStyle} to={`/profile`}>
           <ListItem button onClick={() => setDrawerOpen(false)} key="user">
             <ListItemIcon>

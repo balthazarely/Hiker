@@ -44,14 +44,6 @@ export default function TrailResultsCard({ trailInfo }) {
               </Typography>
             </CardContent>
           </CardActionArea>
-          <CardActions>
-            <Button size="small" color="primary">
-              Share
-            </Button>
-            <Button size="small" color="primary">
-              Learn More
-            </Button>
-          </CardActions>
         </Card>
       </motion.div>
     </Grid>

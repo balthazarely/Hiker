@@ -12,9 +12,6 @@ export const fetchTrailsFromSearch = (lat, lng, address) => async (
   const json = await response.json();
   const filterArray = json.trails.filter(
     (x) => x.stars >= 3 && x.type !== "Connector"
-    // &&
-    // x.length < maxDistance &&
-    // x.length > minDistance
   );
 
   dispatch({
@@ -36,4 +33,3 @@ export const clearTrails = () => {
     type: "CLEAR_DATA",
   };
 };
-// green, greenBlue, blue, blueBlack, black;

@@ -42,7 +42,7 @@ export default function GeneralSearch({
         <div>
           <TextField
             {...getInputProps({
-              placeholder: "Search Places ...",
+              placeholder: "Search City ...",
               className: "location-search-input",
             })}
           />

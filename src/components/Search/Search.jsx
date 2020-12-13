@@ -36,7 +36,7 @@ export default function Search({ setAddress, address, setCoords, setSearchQ }) {
         <div>
           <TextField
             {...getInputProps({
-              placeholder: "Search Places ...",
+              placeholder: "Search City ...",
               className: "location-search-input",
             })}
           />

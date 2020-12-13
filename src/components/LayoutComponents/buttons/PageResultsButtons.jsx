@@ -1,10 +1,9 @@
-import React, { useState } from "react";
+import React from "react";
 import { Button, FormLabel } from "@material-ui/core";
 export default function PageResultsButtons({ buttonResults, handleBtnChange }) {
   return (
     <div>
       <FormLabel component="legend"> Results</FormLabel>
-
       <Button
         variant={buttonResults === 10 ? "contained" : "outlined"}
         size="small"
@@ -31,7 +30,7 @@ export default function PageResultsButtons({ buttonResults, handleBtnChange }) {
         color="primary"
         value="50"
         disableElevation
-        onClick={() => handleBtnChange(50)}
+        onClick={() => handleBtnChange(30)}
       >
         30
       </Button>
