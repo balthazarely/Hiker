@@ -6,25 +6,41 @@ import TrailsPage from "./pages/TrailsPage";
 import Profile from "./pages/Profile";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
-import { ThemeProvider } from "@material-ui/core/styles";
-import CssBaseline from "@material-ui/core/CssBaseline";
 import theme from "./themes/theme";
+import {
+  CircularProgress,
+  CssBaseline,
+  ThemeProvider,
+} from "@material-ui/core/";
 import "./styles/app.scss";
 import { AnimatePresence, motion } from "framer-motion";
 import Navbar from "./components/LayoutComponents/nav/Navbar";
 import HikeLog from "./pages/HikeLog";
-// import NavDrawer from "./components/LayoutComponents/drawer/NavDrawer";
+import { ToastContainer } from "react-toastify";
 
 const App = () => {
   const location = useLocation();
-  const { currentUser } = useSelector((state) => state.auth);
   const { initalized } = useSelector((state) => state.async);
 
-  if (!initalized) return <div>LOADING APP...</div>;
+  if (!initalized)
+    return (
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100vh",
+          width: "100vw",
+        }}
+      >
+        <CircularProgress />
+      </div>
+    );
 
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
+      <ToastContainer position='top-right' hideProgressBar={true} autoClose={2000}/>
       <Navbar />
       <Route>
         <AnimatePresence exitBeforeEnter>

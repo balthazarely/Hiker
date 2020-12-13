@@ -5,11 +5,9 @@ import {
   CardContent,
   Typography,
   CardActions,
-  Grid,
-  Icon,
 } from "@material-ui/core";
 import Hidden from "@material-ui/core/Hidden";
-
+import { toast } from 'react-toastify'
 import CloseIcon from "@material-ui/icons/Close";
 import DirectionsWalkIcon from "@material-ui/icons/DirectionsWalk";
 import { useDispatch } from "react-redux";
@@ -17,10 +15,10 @@ import { fetchSingleTrailInfo } from "../../../actions/singleTrailAction";
 import { Rating } from "@material-ui/lab";
 import { makeStyles } from "@material-ui/styles";
 import { motion } from "framer-motion";
-import { popUp } from "../../../animation/animation";
 import styled from "styled-components";
 import { addTrailToFirestoreLog } from "../../../firestore/firestoreService";
 import HikeLogModal from "../modals/HikeLogModal";
+import { convertToTimeStamp } from "../../../utility/utility";
 
 const useStyles = makeStyles({
   root: {
@@ -65,13 +63,13 @@ export default function ProfileTrailCard({
       console.log("Error. Pls enter date");
     } else {
       setOpenLogModal(false);
-      console.log(trail, currentUser.uid, hikeDate);
-      addTrailToFirestoreLog(trail, currentUser.uid, hikeDate);
+      toast.info("Trail added to your log.")
+      addTrailToFirestoreLog(trail, currentUser.uid, convertToTimeStamp(hikeDate));
     }
   };
 
+ 
   return (
-    // <Grid item xs={6} sm={4} md={4} lg={3}>
     <motion.div initial="hidden" animate="show">
       <motion.div
       // variants={popUp} initial="hidden" animate="show"
@@ -164,7 +162,6 @@ export default function ProfileTrailCard({
         </Card>
       </motion.div>
     </motion.div>
-    // </Grid>
   );
 }
 const CardImageWrapper = styled.div`
@@ -172,9 +169,7 @@ const CardImageWrapper = styled.div`
   height: 150px;
   overflow: hidden;
   border-radius: 10px;
-  background: red;
   cursor: pointer;
-  /* margin-left: 5px; */
 `;
 
 const CardImage = styled(motion.img)`

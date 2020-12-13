@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   Grid,
   Radio,
@@ -6,52 +6,10 @@ import {
   FormControl,
   FormLabel,
   FormControlLabel,
-  Container,
-  Button,
-  Box,
 } from "@material-ui/core";
 import DistanceSlider from "../sliders/DistanceSlider";
-import { makeStyles } from "@material-ui/core/styles";
 import PageResultsButtons from "../buttons/PageResultsButtons";
 import styled from "styled-components";
-
-const useStyles = makeStyles(() => ({
-  root: {
-    flexGrow: 1,
-  },
-  container: {
-    marginBottom: "20px",
-  },
-  gridWrapper: {
-    display: "flex",
-    border: "2px solid blue",
-    direction: "row",
-    justify: "flex-end",
-    alignItems: "flex-end",
-  },
-}));
-
-// const useStyles = makeStyles((theme) => ({
-//   root: {
-//     padding: theme.spacing(1),
-//     [theme.breakpoints.down("sm")]: {
-//       backgroundColor: theme.palette.secondary.main,
-
-//     },
-//     [theme.breakpoints.up("md")]: {
-//       backgroundColor: theme.palette.primary.main,
-//     },
-//     [theme.breakpoints.up("lg")]: {
-//       backgroundColor: "rgba(0,255,0,1)",
-//     },
-//     gridWrapper: {
-//       border: "2px solid blue",
-//       direction: "row",
-//       justify: "flex-end",
-//       alignItems: "flex-end",
-//     },
-//   },
-// }));
 
 export default function TrailFilterContainer({
   sliderValue,
@@ -60,8 +18,6 @@ export default function TrailFilterContainer({
   buttonResults,
   handleBtnChange,
 }) {
-  const classes = useStyles();
-
   return (
     <div style={{ margin: "30px 0" }}>
       <Grid container spacing={3}>
@@ -106,17 +62,7 @@ export default function TrailFilterContainer({
           />
         </Grid>
 
-        <Grid
-          item
-          xs={12}
-          sm={6}
-          item
-          container
-
-          // direction="row"
-          // justify="flex-end"
-          // alignItems="flex-end"
-        >
+        <Grid item xs={12} sm={6} item container>
           <BtnContainer>
             <PageResultsButtons
               handleBtnChange={handleBtnChange}

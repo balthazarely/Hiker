@@ -5,12 +5,10 @@ import {
   CardMedia,
   CardContent,
   Typography,
-  CardActions,
-  Button,
   Grid,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { cardAnimation } from "../animation/animation";
 
 const useStyles = makeStyles({

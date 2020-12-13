@@ -7,37 +7,41 @@ import {
   Typography,
   Hidden,
 } from "@material-ui/core/";
-import { Link, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
-//Components
 import PageHeader from "../components/LayoutComponents/typography/PageHeader";
 import TrailCard from "../components/LayoutComponents/cards/TrailCard";
 import GeneralSearchContainer from "../components/Search/GeneralSearchContainer";
 import AllTrailMap from "../components/LayoutComponents/maps/AllTrailMap";
-// Style
-import { motion, AnimatePresence } from "framer-motion";
-import { pageAnimation } from "../animation/animation";
-import { fetchTrailsFromSearch } from "../actions/TrailActions";
-import { convertToNum } from "../utility/utility";
 import TrailFilter from "../components/LayoutComponents/filter/TrailFilterContainer";
 import SingleTrailModal from "../components/SingleTrailModal";
 import {
-  getUserFavoriteTrails,
   dataFromSnapshot,
   getTrailsFromFirestore,
 } from "../firestore/firestoreService";
+
+import { motion } from "framer-motion";
+import { pageAnimation } from "../animation/animation";
+import { fetchTrailsFromSearch } from "../actions/TrailActions";
+import { convertToNum } from "../utility/utility";
 
 export default function TrailsPage() {
   const location = useLocation();
   let coordinates = location.pathname.split("&").slice(1);
   let trailLocation = coordinates[2];
-  // console.log(coordinates);
   const dispatch = useDispatch();
   const { currentUser } = useSelector((state) => state?.auth);
   const { authenticated } = useSelector((state) => state?.auth);
+  const { trails, city } = useSelector((state) => state.trail);
+  const { loading } = useSelector((state) => state.async);
+
+  //Hooks
   const [favoriteTrailsFromFirebase, setFavoriteTrailsFromFirebase] = useState(
     []
   );
+  const [sliderValue, setSliderValue] = useState([0.5, 30]);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [radioValue, setRadioValue] = useState("");
 
   useEffect(() => {
     if (coordinates.length === 0) {
@@ -74,20 +78,12 @@ export default function TrailsPage() {
     }
   }, []);
 
-  const { trails, city } = useSelector((state) => state.trail);
-  const { loading } = useSelector((state) => state.async);
-  // Slider Values
-  const [sliderValue, setSliderValue] = useState([0.5, 30]);
-  const [modalOpen, setModalOpen] = useState(false);
-  //Dificulty filter
-  const [radioValue, setRadioValue] = useState("");
   const handleRadioChange = (event) => {
     setRadioValue(event.target.value);
   };
 
   // Page results
   const [buttonResults, setButtonResults] = useState(10);
-
   const handleBtnChange = (value) => {
     setButtonResults(value);
   };
@@ -117,6 +113,7 @@ export default function TrailsPage() {
       .slice(0, buttonResults)
       .filter((x) => x.length > sliderValue[0] && x.length < sliderValue[1]);
   };
+
   // Get location
   const pathId = location.pathname.split("/")[2];
 
@@ -200,8 +197,7 @@ export default function TrailsPage() {
       </Grid>
       <Grid item md={4} sm={12} xs={12}>
         <Hidden smDown>
-          {loading ? // <CircularProgress />
-          null : (
+          {loading ? null : (
             <motion.div
               variants={pageAnimation}
               initial="hidden"

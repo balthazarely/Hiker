@@ -32,24 +32,3 @@ theme.overrides = {
   },
 };
 export default theme;
-
-//   MuiInput: {
-//     root: {
-//       top: theme.spacing(2),
-
-//       border: `1px solid ${grey[500]}`,
-
-//       outline: `1px solid transparent`,
-
-//       padding: theme.spacing(1),
-
-//       "&$focused": {
-//         border: `1px solid ${theme.palette.primary.main}`,
-
-//         outline: `1px solid ${theme.palette.primary.main}`,
-//       },
-//     },
-
-//     // we don't need `focused: {}` with overrides
-//   },
-// };

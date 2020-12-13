@@ -1,12 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import firebase from "../config/firebase";
 import { makeStyles } from "@material-ui/core/styles";
 import { pageAnimation } from "../animation/animation";
 import { motion } from "framer-motion";
 import Pagination from "@material-ui/lab/Pagination";
-import ListItemText from "@material-ui/core/ListItemText";
-import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 import styled from "styled-components";
 
 import {
@@ -18,7 +15,6 @@ import {
 import {
   Container,
   Box,
-  CircularProgress,
   Grid,
   Paper,
   Typography,
@@ -28,32 +24,14 @@ import {
 
 import PhoneIcon from "@material-ui/icons/Phone";
 import FavoriteIcon from "@material-ui/icons/Favorite";
-import PersonPinIcon from "@material-ui/icons/PersonPin";
 import SingleTrailModal from "../components/SingleTrailModal";
-
 import ProfileTrailCard from "../components/LayoutComponents/cards/ProfileTrailCard";
 import HikeLogCard from "../components/LayoutComponents/cards/HikeLogCard";
 import ProfileInfo from "../components/ProfileInfo";
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    width: "100%",
-    backgroundColor: theme.palette.background.paper,
-  },
-  item: {
-    padding: theme.spacing(1.2),
-  },
-  avatar: { marginRight: theme.spacing(5) },
-  paginator: {
-    justifyContent: "center",
-    padding: "10px",
-  },
-}));
-
 export default function Profile() {
   const [modalOpen, setModalOpen] = useState(false);
   const { authenticated } = useSelector((state) => state?.auth);
-
   const { currentUser } = useSelector((state) => state?.auth);
   const [favoriteTrailsFromFirebase, setFavoriteTrailsFromFirebase] = useState(
     []
@@ -116,23 +94,48 @@ export default function Profile() {
       maxWidth: 500,
     },
   });
+
   const [value, setValue] = useState(0);
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
 
-  // pagination shit
+  // Pagination Favorites
   const classes = useStyles();
-
   const itemsPerPage = 4;
   const numberOfPages = Math.ceil(
     favoriteTrailsFromFirebase.length / itemsPerPage
   );
   const [page, setPage] = React.useState(1);
-
   const handleChangePagingation = (event, value) => {
     setPage(value);
   };
+
+  // Pagination Log
+  const itemsPerPageLog = 8;
+  const numberOfPagesLog = Math.ceil(
+    hikeLogFromFirebase.length / itemsPerPageLog
+  );
+  const [pageLog, setPagLoge] = React.useState(1);
+  const handleChangePagingationLog = (event, value) => {
+    setPagLoge(value);
+  };
+
+  // let filteredHikeLog = hikeLogFromFirebase.filter(trail => trail.length === 10.4)
+  let filteredHikeLog = hikeLogFromFirebase.sort(sortTrailLog)
+
+  function sortTrailLog(a, b) {
+    const trailA = a.dateHiked
+    const trailB = b.dateHiked
+    let comparison = 0;
+    if (trailA < trailB) {
+      comparison = 1;
+    } else if (trailA > trailB) {
+      comparison = -1;
+    }
+    return comparison;
+  }
+  
 
   return (
     <Container>
@@ -190,6 +193,17 @@ export default function Profile() {
                 </Paper>
 
                 <TabPanel value={value} index={0}>
+                  <PaginationWrapper>
+                    <Pagination
+                      count={numberOfPages}
+                      page={page}
+                      onChange={handleChangePagingation}
+                      defaultPage={1}
+                      color="primary"
+                      size="medium"
+                      classes={{ ul: classes.paginator }}
+                    />
+                  </PaginationWrapper>
                   {favoriteTrailsFromFirebase &&
                     favoriteTrailsFromFirebase
                       .slice((page - 1) * itemsPerPage, page * itemsPerPage)
@@ -204,26 +218,30 @@ export default function Profile() {
                           />
                         );
                       })}
-
+                </TabPanel>
+                <TabPanel value={value} index={1}>
                   <PaginationWrapper>
                     <Pagination
-                      count={numberOfPages}
-                      page={page}
-                      onChange={handleChangePagingation}
+                      count={numberOfPagesLog}
+                      page={pageLog}
+                      onChange={handleChangePagingationLog}
                       defaultPage={1}
                       color="primary"
                       size="medium"
                       classes={{ ul: classes.paginator }}
                     />
                   </PaginationWrapper>
-                </TabPanel>
-                <TabPanel value={value} index={1}>
-                  {hikeLogFromFirebase &&
-                    hikeLogFromFirebase.map((hike) => {
-                      return (
-                        <HikeLogCard trail={hike} currentUser={currentUser} />
-                      );
-                    })}
+                  {filteredHikeLog &&
+                    filteredHikeLog
+                      .slice(
+                        (pageLog - 1) * itemsPerPageLog,
+                        pageLog * itemsPerPageLog
+                      )
+                      .map((hike) => {
+                        return (
+                          <HikeLogCard trail={hike} currentUser={currentUser} />
+                        );
+                      })}
                 </TabPanel>
               </Container>
             ) : (
@@ -237,7 +255,6 @@ export default function Profile() {
                 }}
               >
                 <Typography
-                  // gutterBottom
                   variant="h4"
                   component="h2"
                   color="rgb(100,100,100)"

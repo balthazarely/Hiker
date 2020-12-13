@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Card, CardContent, Typography, Button } from "@material-ui/core";
 import DirectionsWalkIcon from "@material-ui/icons/DirectionsWalk";
+import { toast } from 'react-toastify'
 
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import Menu from "@material-ui/core/Menu";
@@ -18,6 +19,7 @@ import {
   removeTrailFirestoreLog,
 } from "../../../firestore/firestoreService";
 import HikeLogModal from "../modals/HikeLogModal";
+import { timeStampToDate } from "../../../utility/utility";
 
 const useStyles = makeStyles({
   root: {
@@ -47,11 +49,6 @@ export default function HikeLogCard({ trail, currentUser }) {
   const [openLogModal, setOpenLogModal] = useState(false);
   const [hikeDate, setHikeDate] = useState("");
 
-  const formatDate = (date) => {
-    let newDate = date.split("-");
-    return newDate[1] + "/" + newDate[2] + "/" + newDate[0];
-  };
-
   const handleAddToLog = () => {
     setOpenLogModal(false);
     console.log(trail, currentUser.uid, hikeDate);
@@ -67,6 +64,7 @@ export default function HikeLogCard({ trail, currentUser }) {
     setAnchorEl(null);
   };
 
+  
   return (
     <motion.div initial="hidden" animate="show">
       <motion.div
@@ -97,7 +95,7 @@ export default function HikeLogCard({ trail, currentUser }) {
                   component="h2"
                   color="rgba(0,0,0,0)"
                 >
-                  {formatDate(trail.dateHiked)}
+                  {timeStampToDate(trail.dateHiked)}
                 </Typography>
                 <Typography
                   gutterBottom
@@ -132,8 +130,10 @@ export default function HikeLogCard({ trail, currentUser }) {
                     Edit
                   </MenuItem>
                   <MenuItem
-                    onClick={() =>
+                    onClick={() => {
                       removeTrailFirestoreLog(trail.docId, currentUser.uid)
+                      toast.error("Trail remove from you log.")
+                      }
                     }
                   >
                     Delete

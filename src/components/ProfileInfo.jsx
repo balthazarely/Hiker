@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { Avatar, Typography } from "@material-ui/core/";
-import ProfileChart from "./ProfileChart";
 import {
   dataFromSnapshot,
   getHikeLogFromFirestore,
@@ -77,8 +76,6 @@ export default function ProfileInfo({ currentUser, authenticated }) {
         >
           {hikeLogFromFirebase.length}
         </Typography>
-
-        {/* <ProfileChart /> */}
       </Stats>
     </ProfileWrapper>
   );

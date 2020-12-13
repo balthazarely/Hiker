@@ -60,7 +60,7 @@ export default function TrailResults() {
                 </Button>
               </Link>
             ) : null}
-            {city && trailResults.length == 0 ? (
+            {city.length !== 0 && trailResults.length == 0 ? (
               <h3>Looks like there are no results</h3>
             ) : null}
           </div>

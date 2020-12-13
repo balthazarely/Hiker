@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import Axios from "axios";
 
 //Components
-import SideDrawer from "../components/SideDrawer";
 import SearchContainer from "../components/Search/SearchContainer";
 import TrailResults from "../components/TrailResults";
-import EventMap from "../components/EventMap";
 
 // Style
 import Typography from "@material-ui/core/Typography";
@@ -14,8 +12,6 @@ import { Container, Button, CircularProgress } from "@material-ui/core/";
 import { motion } from "framer-motion";
 import { pageAnimation } from "../animation/animation";
 import { clearTrails, fetchTrailsFromSearch } from "../actions/TrailActions";
-import GetUserLocation from "../components/GetUserLocation";
-// import GetUserLocation from "../components/GetUserLocation";
 
 export default function Home() {
   const [location, setLocation] = useState({ city: "", state: "" });
@@ -85,7 +81,6 @@ export default function Home() {
             component="h1"
             variant="h4"
             style={{
-              // height: "200px",
               paddingTop: "100px",
               textAlign: "center",
             }}
@@ -105,7 +100,6 @@ export default function Home() {
             setCoords={setCoords}
             coords={coords}
             location={location}
-            // setViewport={setViewport}
             getUserGeoLocation={getUserGeoLocation}
           />
           <TrailResults />

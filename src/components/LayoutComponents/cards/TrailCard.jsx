@@ -11,6 +11,7 @@ import {
   Grid,
 } from "@material-ui/core";
 import DirectionsWalkIcon from "@material-ui/icons/DirectionsWalk";
+import { toast } from 'react-toastify'
 
 import { Rating } from "@material-ui/lab";
 import { fetchSingleTrailInfo } from "../../../actions/singleTrailAction";
@@ -22,6 +23,7 @@ import {
   favoriteTrail,
 } from "../../../firestore/firestoreService";
 import HikeLogModal from "../modals/HikeLogModal";
+import { convertToTimeStamp, textLimiter } from "../../../utility/utility";
 
 const useStyles = makeStyles({
   root: {},
@@ -72,17 +74,21 @@ export default function TrailCard({
     }
   }, [favoriteTrailsFromFirebase]);
 
-  const textLimiter = (str) => {
-    return str.length > 90 ? str.slice(0, 90) + "..." : str.slice(0, 90);
-  };
-
   const handleAddToLog = () => {
     if (hikeDate === "") {
       console.log("Error. Pls enter date");
     } else {
       setOpenLogModal(false);
-      // console.log(trailInfo, currentUser.uid, hikeDate);
-      addTrailToFirestoreLogFromResults(trailInfo, currentUser.uid, hikeDate);
+      toast.info("Trail added to your log.")
+      addTrailToFirestoreLogFromResults(trailInfo, currentUser.uid, convertToTimeStamp(hikeDate));
+    }
+  };
+
+  const checkImageForBlank = (img) => {
+    if (img === "") {
+      return "/hike-placeholder.jpg";
+    } else {
+      return img;
     }
   };
 
@@ -101,7 +107,7 @@ export default function TrailCard({
             <CardActionArea onClick={handleCardClick}>
               <CardMedia
                 className={classes.media}
-                image={trailInfo.imgSmall}
+                image={checkImageForBlank(trailInfo.imgSmall)}
                 title="Contemplative Reptile"
               />
               <CardContent className={classes.contents}>

@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import ReactMapGL, { Marker, Popup } from "react-map-gl";
-import { useSelector } from "react-redux";
 import { convertToNum } from "../../../utility/utility";
 import FlagIcon from "@material-ui/icons/Flag";
 import { Typography } from "@material-ui/core";
@@ -8,7 +7,6 @@ import { Rating } from "@material-ui/lab";
 
 export default function EventMap({ trails, coordinates }) {
   const [clickedTrail, setClickedTrail] = useState({});
-  //   const [showClickedTrail, setShowClickedTrail] = useState(false);
   const [popUpOpen, setPopUpOpen] = useState(false);
   const [viewport, setViewport] = useState({
     latitude: coordinates.length > 0 ? convertToNum(coordinates[0]) : 44,

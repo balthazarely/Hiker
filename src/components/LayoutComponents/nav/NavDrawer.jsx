@@ -1,17 +1,16 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import clsx from "clsx";
-import { makeStyles } from "@material-ui/core/styles";
-import Drawer from "@material-ui/core/Drawer";
-
-import List from "@material-ui/core/List";
-import { Link } from "react-router-dom";
-
-import ListItem from "@material-ui/core/ListItem";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
-import ListItemText from "@material-ui/core/ListItemText";
-import InboxIcon from "@material-ui/icons/MoveToInbox";
-import Divider from "@material-ui/core/Divider";
+import {
+  Drawer,
+  Divider,
+  makeStyles,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  List,
+} from "@material-ui/core/";
 import { signOutFirebase } from "../../../firestore/firebaseService";
 
 import FilterHdrIcon from "@material-ui/icons/FilterHdr";
@@ -28,6 +27,14 @@ const useStyles = makeStyles({
   },
 });
 
+const linkStyle = {
+  textDecoration: "none",
+};
+
+const textStyle = {
+  color: "black",
+};
+
 export default function NavDrawer({ drawerOpen, setDrawerOpen }) {
   const classes = useStyles();
   const { authenticated, currentUser } = useSelector((state) => state?.auth);
@@ -35,18 +42,9 @@ export default function NavDrawer({ drawerOpen, setDrawerOpen }) {
   const handleSignOut = async () => {
     try {
       await signOutFirebase();
-      // history.push("/login");
     } catch (err) {
       console.log(err);
     }
-  };
-
-  const linkStyle = {
-    textDecoration: "none",
-  };
-
-  const textStyle = {
-    color: "black",
   };
 
   const list = () => (
@@ -126,8 +124,6 @@ export default function NavDrawer({ drawerOpen, setDrawerOpen }) {
           key="Login/Register"
         >
           {authenticated ? <div>Signed in as {currentUser.email}</div> : null}
-
-          {/* <ListItemText style={textStyle} primary="Login/Register" /> */}
         </ListItem>
       </List>
     </div>
