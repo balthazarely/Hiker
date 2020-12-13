@@ -17,6 +17,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import Navbar from "./components/LayoutComponents/nav/Navbar";
 import HikeLog from "./pages/HikeLog";
 import { ToastContainer } from "react-toastify";
+import About from "./pages/About";
 
 const App = () => {
   const location = useLocation();
@@ -46,6 +47,7 @@ const App = () => {
         <AnimatePresence exitBeforeEnter>
           <motion.div key={location.pathname} exit={{ opacity: 0 }}>
             <Switch location={location} key={location.pathname}>
+            <Route exact path="/about" component={About} />
               <Route exact path="/login" component={LoginPage} />
               <Route exact path="/register" component={RegisterPage} />
               <Route exact path={["/trails/:id"]} component={TrailsPage} />

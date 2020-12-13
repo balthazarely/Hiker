@@ -20,6 +20,7 @@ import {
   Typography,
   Tabs,
   Tab,
+  CircularProgress
 } from "@material-ui/core/";
 
 import PhoneIcon from "@material-ui/icons/Phone";
@@ -37,7 +38,8 @@ export default function Profile() {
     []
   );
   const [hikeLogFromFirebase, setHikeLogFromFirebase] = useState([]);
-
+  const [loading, setLoading] = useState(true)
+  
   useEffect(() => {
     if (authenticated) {
       const unsubscribe = getTrailsFromFirestore(currentUser.uid, {
@@ -46,6 +48,7 @@ export default function Profile() {
             dataFromSnapshot(docSnap)
           );
           setFavoriteTrailsFromFirebase(trails);
+          setLoading(false)
         },
         error: (error) => console.log(error),
       });
@@ -193,6 +196,7 @@ export default function Profile() {
                 </Paper>
 
                 <TabPanel value={value} index={0}>
+                  
                   <PaginationWrapper>
                     <Pagination
                       count={numberOfPages}
@@ -204,6 +208,12 @@ export default function Profile() {
                       classes={{ ul: classes.paginator }}
                     />
                   </PaginationWrapper>
+
+                  {loading &&
+                  <LoadingContainer>
+                    <CircularProgress />
+                  </LoadingContainer>
+                  }
                   {favoriteTrailsFromFirebase &&
                     favoriteTrailsFromFirebase
                       .slice((page - 1) * itemsPerPage, page * itemsPerPage)
@@ -276,3 +286,10 @@ const PaginationWrapper = styled.div`
   justify-content: flex-end;
   padding: 20px 0;
 `;
+
+const LoadingContainer = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+`;
+

@@ -20,6 +20,7 @@ theme.overrides = {
     },
 
     containedPrimary: {
+      color: "white",
       "&:hover": {
         // changes colors for hover state
         backgroundColor: theme.palette.primary.dark,

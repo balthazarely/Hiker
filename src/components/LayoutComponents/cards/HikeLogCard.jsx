@@ -1,19 +1,10 @@
-import React, { useEffect, useState } from "react";
-import { Card, CardContent, Typography, Button } from "@material-ui/core";
-import DirectionsWalkIcon from "@material-ui/icons/DirectionsWalk";
+import React, { useState } from "react";
+import { Card, CardContent, Typography, Button, Menu, MenuItem } from "@material-ui/core";
 import { toast } from 'react-toastify'
-
 import MoreVertIcon from "@material-ui/icons/MoreVert";
-import Menu from "@material-ui/core/Menu";
-import MenuItem from "@material-ui/core/MenuItem";
-import { useDispatch } from "react-redux";
-import { fetchSingleTrailInfo } from "../../../actions/singleTrailAction";
-import { Rating } from "@material-ui/lab";
 import { makeStyles } from "@material-ui/styles";
 import { motion } from "framer-motion";
-import { popUp } from "../../../animation/animation";
 import styled from "styled-components";
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import {
   updateFirestoreLog,
   removeTrailFirestoreLog,
@@ -29,7 +20,6 @@ const useStyles = makeStyles({
     alignItems: "center",
   },
   media: {
-    // height: 200,
   },
   contents: {
     width: "100%",
@@ -67,9 +57,7 @@ export default function HikeLogCard({ trail, currentUser }) {
   
   return (
     <motion.div initial="hidden" animate="show">
-      <motion.div
-      //  variants={popUp} initial="hidden" animate="show"
-      >
+      <motion.div>
         <Card className={classes.root}>
           <CardContent className={classes.contents}>
             <HikeLogModal
@@ -142,22 +130,6 @@ export default function HikeLogCard({ trail, currentUser }) {
               </LocationWrapper>
 
               <SubWrapper>
-                {/* <Typography
-                    gutterBottom
-                    variant="subtitle2"
-                    component="h2"
-                    color="primary"
-                  >
-                    {trail.dateHiked}
-                  </Typography>
-                  <Typography
-                    gutterBottom
-                    variant="subtitle2"
-                    component="h2"
-                    color="primary"
-                  >
-                    {trail.length} Miles
-                  </Typography> */}
               </SubWrapper>
             </TextWrapper>
           </CardContent>
@@ -166,21 +138,7 @@ export default function HikeLogCard({ trail, currentUser }) {
     </motion.div>
   );
 }
-const CardImageWrapper = styled.div`
-  /* width: 100px; */
-  /* height: 100%; */
-  overflow: hidden;
-  border-radius: 10px;
-  /* margin-left: 5px; */
-`;
-
-const CardImage = styled(motion.img)`
-  width: 150px;
-  height: 100%;
-`;
-
 const TextWrapper = styled(motion.div)`
-  /* margin-left: 15px; */
   width: 100%;
   display: flex;
   flex-direction: row;
@@ -189,7 +147,6 @@ const TextWrapper = styled(motion.div)`
 const HeaderWrapper = styled(motion.div)`
   display: flex;
   flex-direction: column;
-  /* justify-content: space-between; */
   width: 50%;
 `;
 

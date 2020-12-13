@@ -56,7 +56,7 @@ export default function TrailResults() {
                   color="primary"
                   className={classes.btn}
                 >
-                  More results
+                 Show all results
                 </Button>
               </Link>
             ) : null}

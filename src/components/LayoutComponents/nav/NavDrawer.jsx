@@ -17,6 +17,7 @@ import FilterHdrIcon from "@material-ui/icons/FilterHdr";
 import LocationCityIcon from "@material-ui/icons/LocationCity";
 import AccountBoxIcon from "@material-ui/icons/AccountBox";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
+import InfoIcon from '@material-ui/icons/Info';
 
 const useStyles = makeStyles({
   list: {
@@ -50,6 +51,17 @@ export default function NavDrawer({ drawerOpen, setDrawerOpen }) {
   const list = () => (
     <div className={clsx(classes.list)}>
       <List>
+
+      <Link to="/about" style={linkStyle}>
+          <ListItem button key="About" onClick={() => setDrawerOpen(false)}>
+            <ListItemIcon>
+              <InfoIcon />
+            </ListItemIcon>
+            <ListItemText primary="About" style={textStyle} />
+          </ListItem>
+        </Link>
+
+
         <Link to="/" style={linkStyle}>
           <ListItem button key="search" onClick={() => setDrawerOpen(false)}>
             <ListItemIcon>
@@ -58,6 +70,7 @@ export default function NavDrawer({ drawerOpen, setDrawerOpen }) {
             <ListItemText primary="Search Trails" style={textStyle} />
           </ListItem>
         </Link>
+
 
         <Link
           style={linkStyle}

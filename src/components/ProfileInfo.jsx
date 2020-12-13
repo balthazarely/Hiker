@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Avatar, Typography } from "@material-ui/core/";
+import { Avatar, Typography, CircularProgress } from "@material-ui/core/";
 import {
   dataFromSnapshot,
   getHikeLogFromFirestore,
@@ -12,6 +12,8 @@ export default function ProfileInfo({ currentUser, authenticated }) {
     hikesCompleted: 2,
     totalDistance: 0,
   });
+  const [loading, setLoading] = useState(true)
+
 
   useEffect(() => {
     if (authenticated) {
@@ -22,6 +24,7 @@ export default function ProfileInfo({ currentUser, authenticated }) {
           );
           setHikeLogFromFirebase(trails);
           calcStats(trails);
+          setLoading(false)
         },
         error: (error) => console.log(error),
       });
@@ -52,7 +55,13 @@ export default function ProfileInfo({ currentUser, authenticated }) {
         {currentUser?.displayName}
       </Typography>
       <Stats>
-        <Typography variant="subtitle2" component="h4">
+      {loading ?
+        (<LoadingContainer>
+          <CircularProgress />
+        </LoadingContainer>)
+        : (
+          <div>
+             <Typography variant="subtitle2" component="h4">
           Distance Hiked:
         </Typography>
         <Typography
@@ -76,6 +85,8 @@ export default function ProfileInfo({ currentUser, authenticated }) {
         >
           {hikeLogFromFirebase.length}
         </Typography>
+          </div>
+        )}
       </Stats>
     </ProfileWrapper>
   );
@@ -96,3 +107,9 @@ const Stats = styled.div`
   align-items: flex-start;
   background: #eeeeee;
 `;
+const LoadingContainer = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+`;
+
