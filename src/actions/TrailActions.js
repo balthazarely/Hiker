@@ -7,7 +7,7 @@ export const fetchTrailsFromSearch = (lat, lng, address) => async (
 ) => {
   dispatch(asyncActionStart());
   const response = await fetch(
-    `https://www.hikingproject.com/data/get-trails?lat=${lat}&lon=${lng}&key=${apiKey}&maxResults=12`
+    `https://www.hikingproject.com/data/get-trails?lat=${lat}&lon=${lng}&key=${apiKey}&maxResults=30`
   );
   const json = await response.json();
   const filterArray = json.trails.filter(

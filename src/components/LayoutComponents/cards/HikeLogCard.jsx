@@ -1,16 +1,7 @@
 import React, { useEffect, useState } from "react";
-import {
-  Card,
-  CardMedia,
-  CardContent,
-  Typography,
-  CardActions,
-  Grid,
-  AccordionSummary,
-  AccordionDetails,
-  Accordion,
-  Button,
-} from "@material-ui/core";
+import { Card, CardContent, Typography, Button } from "@material-ui/core";
+import DirectionsWalkIcon from "@material-ui/icons/DirectionsWalk";
+
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
@@ -26,7 +17,7 @@ import {
   updateFirestoreLog,
   removeTrailFirestoreLog,
 } from "../../../firestore/firestoreService";
-import EditLogModal from "../modals/EditLogModal";
+import HikeLogModal from "../modals/HikeLogModal";
 
 const useStyles = makeStyles({
   root: {
@@ -51,20 +42,15 @@ const useStyles = makeStyles({
   },
 });
 
-export default function HikeLogCard({
-  trail,
-  //   removeFavoriteTrail,
-  currentUser,
-  //   setModalOpen,
-}) {
+export default function HikeLogCard({ trail, currentUser }) {
   const classes = useStyles();
-  //   const dispatch = useDispatch();
   const [openLogModal, setOpenLogModal] = useState(false);
   const [hikeDate, setHikeDate] = useState("");
-  //   const handleOpenModal = () => {
-  //     dispatch(fetchSingleTrailInfo(trail.trailId));
-  //     setModalOpen(true);
-  //   };
+
+  const formatDate = (date) => {
+    let newDate = date.split("-");
+    return newDate[1] + "/" + newDate[2] + "/" + newDate[0];
+  };
 
   const handleAddToLog = () => {
     setOpenLogModal(false);
@@ -72,12 +58,11 @@ export default function HikeLogCard({
     updateFirestoreLog(trail, currentUser.uid, trail.docId, hikeDate);
   };
 
+  // Menu Stuff
   const [anchorEl, setAnchorEl] = React.useState(null);
-
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
-
   const handleClose = () => {
     setAnchorEl(null);
   };
@@ -89,11 +74,12 @@ export default function HikeLogCard({
       >
         <Card className={classes.root}>
           <CardContent className={classes.contents}>
-            <EditLogModal
+            <HikeLogModal
               setOpenLogModal={setOpenLogModal}
               openLogModal={openLogModal}
               setHikeDate={setHikeDate}
               handleAddToLog={handleAddToLog}
+              title="Edit Hike"
             />
 
             <TextWrapper>
@@ -109,9 +95,9 @@ export default function HikeLogCard({
                   gutterBottom
                   variant="subtitle2"
                   component="h2"
-                  color="primary"
+                  color="rgba(0,0,0,0)"
                 >
-                  {trail.dateHiked}
+                  {formatDate(trail.dateHiked)}
                 </Typography>
                 <Typography
                   gutterBottom
@@ -212,6 +198,7 @@ const LocationWrapper = styled(motion.div)`
   flex-direction: column;
   width: 50%;
   align-items: flex-end;
+  text-align: right;
 `;
 
 const SubWrapper = styled(motion.div)`

@@ -83,6 +83,7 @@ export default function ProfileTrailCard({
               openLogModal={openLogModal}
               setHikeDate={setHikeDate}
               handleAddToLog={handleAddToLog}
+              title="Add to Log"
             />
             <div
               style={{

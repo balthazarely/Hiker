@@ -10,12 +10,18 @@ import {
   Button,
   Grid,
 } from "@material-ui/core";
+import DirectionsWalkIcon from "@material-ui/icons/DirectionsWalk";
+
 import { Rating } from "@material-ui/lab";
 import { fetchSingleTrailInfo } from "../../../actions/singleTrailAction";
 import { makeStyles } from "@material-ui/styles";
 import { motion } from "framer-motion";
 import { popUp } from "../../../animation/animation";
-import { favoriteTrail } from "../../../firestore/firestoreService";
+import {
+  addTrailToFirestoreLogFromResults,
+  favoriteTrail,
+} from "../../../firestore/firestoreService";
+import HikeLogModal from "../modals/HikeLogModal";
 
 const useStyles = makeStyles({
   root: {},
@@ -44,6 +50,8 @@ export default function TrailCard({
   const dispatch = useDispatch();
   const { currentUser } = useSelector((state) => state.auth);
   const [alreadyFav, setAlreadyFav] = useState(false);
+  const [openLogModal, setOpenLogModal] = useState(false);
+  const [hikeDate, setHikeDate] = useState("");
 
   const handleCardClick = () => {
     dispatch(fetchSingleTrailInfo(trailInfo.id));
@@ -64,10 +72,28 @@ export default function TrailCard({
   const textLimiter = (str) => {
     return str.length > 90 ? str.slice(0, 90) + "..." : str.slice(0, 90);
   };
+
+  const handleAddToLog = () => {
+    if (hikeDate === "") {
+      console.log("Error. Pls enter date");
+    } else {
+      setOpenLogModal(false);
+      // console.log(trailInfo, currentUser.uid, hikeDate);
+      addTrailToFirestoreLogFromResults(trailInfo, currentUser.uid, hikeDate);
+    }
+  };
+
   return (
     <Grid item xs={6} sm={4} md={4} lg={3}>
       <motion.div initial="hidden" animate="show">
         <motion.div variants={popUp} initial="hidden" animate="show">
+          <HikeLogModal
+            setOpenLogModal={setOpenLogModal}
+            openLogModal={openLogModal}
+            setHikeDate={setHikeDate}
+            handleAddToLog={handleAddToLog}
+            title="Add to Log"
+          />
           <Card className={classes.root}>
             <CardActionArea onClick={handleCardClick}>
               <CardMedia
@@ -112,6 +138,16 @@ export default function TrailCard({
                 }}
               >
                 Add To Favorites
+              </Button>
+              <Button
+                onClick={() => setOpenLogModal(true)}
+                variant="contained"
+                color="primary"
+                size="small"
+                // className={classes.button}
+                endIcon={<DirectionsWalkIcon />}
+              >
+                Log
               </Button>
             </CardActions>
           </Card>

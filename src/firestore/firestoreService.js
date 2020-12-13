@@ -40,6 +40,22 @@ export function addTrailToFirestoreLog(trail, userID, date) {
   });
 }
 
+export function addTrailToFirestoreLogFromResults(trail, userID, date) {
+  return db.collection("users").doc(userID).collection("hikeLog").add({
+    dateHiked: date,
+    name: trail.name,
+    trailId: trail.id,
+    summary: trail.summary,
+    difficulty: trail.difficulty,
+    img: trail.imgSmall,
+    length: trail.length,
+    latitude: trail.latitude,
+    longitude: trail.longitude,
+    stars: trail.stars,
+    location: trail.location,
+  });
+}
+
 export function updateFirestoreLog(trail, userID, docID, date) {
   return db
     .collection("users")
@@ -92,19 +108,6 @@ export function removeFavoriteTrailQuery(trailId, userID) {
       });
     });
 }
-
-// export function removeFavoriteTrail(trailId, userID) {
-//   let query = db
-//     .collection("users")
-//     .doc(userID)
-//     .collection("favoriteTrails")
-//     .where("trailId", "==", trailId);
-//   query.get().then((querySnapshot) => {
-//     querySnapshot.forEach((doc) => {
-//       doc.ref.delete();
-//     });
-//   });
-// }
 
 export function dataFromSnapshot(snapshot) {
   if (!snapshot.exists) return undefined;
