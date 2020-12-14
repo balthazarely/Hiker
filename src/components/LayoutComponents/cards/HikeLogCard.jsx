@@ -67,7 +67,6 @@ export default function HikeLogCard({ trail, currentUser }) {
               handleAddToLog={handleAddToLog}
               title="Edit Hike"
             />
-
             <TextWrapper>
               <HeaderWrapper>
                 <Typography
@@ -81,7 +80,7 @@ export default function HikeLogCard({ trail, currentUser }) {
                   gutterBottom
                   variant="subtitle2"
                   component="h2"
-                  color="rgba(0,0,0,0)"
+                  // color="rgba(0,0,0,0)"
                 >
                   {timeStampToDate(trail.dateHiked)}
                 </Typography>

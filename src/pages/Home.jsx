@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Axios from "axios";
-
 //Components
 import SearchContainer from "../components/Search/SearchContainer";
 import TrailResults from "../components/TrailResults";
-
 // Style
 import Typography from "@material-ui/core/Typography";
 import { Container, Button, CircularProgress } from "@material-ui/core/";
@@ -21,6 +19,7 @@ export default function Home() {
   const [geoLocation, setGeoLocation] = useState({ city: "", state: "" });
   const [geoBtnVisible, setGeoBtnVisible] = useState(true);
   const [geoLoading, setGeoLoading] = useState(false);
+  const { error } = useSelector((state) => state?.trail);
 
   const dispatch = useDispatch();
   useEffect(() => {
@@ -60,7 +59,7 @@ export default function Home() {
   return (
     <div
       style={{
-        height: "100%",
+        // height: "100%",
         backgroundImage: "url('mountains-snow.jpg')",
         backgroundRepeat: " no-repeat",
         backgroundPosition: "center",
@@ -128,6 +127,15 @@ export default function Home() {
               </Button>
             ) : null}
             {geoLoading ? <CircularProgress /> : null}
+            {error ? <Typography
+              component="h1"
+              variant="subtitle1"
+              style={{
+                textAlign: "center",
+              }}
+            >
+           There was an error with your search. Please refresh and try again.
+          </Typography> : null}
           </div>
         </Container>
       </motion.div>

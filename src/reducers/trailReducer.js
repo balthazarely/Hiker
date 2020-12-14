@@ -2,6 +2,7 @@ const initialState = {
   trails: null,
   city: "",
   coordinates: null,
+  error: true
 };
 
 const trailReducer = (state = initialState, action) => {
@@ -12,6 +13,7 @@ const trailReducer = (state = initialState, action) => {
         trails: action.payload.trails,
         city: action.payload.city,
         coordinates: action.payload.coordinates,
+        error: false
       };
     case "CLEAR_DATA":
       return {
@@ -19,7 +21,16 @@ const trailReducer = (state = initialState, action) => {
         trails: [],
         city: [],
         coordinates: [],
+        error: false
       };
+      case "FETCH_TRAILS_ERROR":
+        return {
+          ...state,
+          trails: [],
+          city: [],
+          coordinates: [],
+          error: true
+        };
 
     default:
       return state;

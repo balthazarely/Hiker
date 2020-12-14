@@ -15,7 +15,6 @@ import {
 import "./styles/app.scss";
 import { AnimatePresence, motion } from "framer-motion";
 import Navbar from "./components/LayoutComponents/nav/Navbar";
-import HikeLog from "./pages/HikeLog";
 import { ToastContainer } from "react-toastify";
 import About from "./pages/About";
 
@@ -52,7 +51,6 @@ const App = () => {
               <Route exact path="/register" component={RegisterPage} />
               <Route exact path={["/trails/:id"]} component={TrailsPage} />
               <Route exact path="/profile" component={Profile} />
-              <Route exact path="/hikelog" component={HikeLog} />
               <Route exact path="/" component={Home} />
             </Switch>
           </motion.div>

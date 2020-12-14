@@ -112,7 +112,7 @@ export default function ProfileTrailCard({
                     />
                   </Hidden>
                 </HeaderWrapper>
-                <Typography gutterBottom variant="subtitle" component="h4">
+                <Typography gutterBottom variant="subtitle2" component="h4">
                   {trail.location}
                 </Typography>
                 <Typography

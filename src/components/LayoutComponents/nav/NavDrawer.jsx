@@ -51,7 +51,6 @@ export default function NavDrawer({ drawerOpen, setDrawerOpen }) {
   const list = () => (
     <div className={clsx(classes.list)}>
       <List>
-
       <Link to="/about" style={linkStyle}>
           <ListItem button key="About" onClick={() => setDrawerOpen(false)}>
             <ListItemIcon>
@@ -70,8 +69,6 @@ export default function NavDrawer({ drawerOpen, setDrawerOpen }) {
             <ListItemText primary="Search Trails" style={textStyle} />
           </ListItem>
         </Link>
-
-
         <Link
           style={linkStyle}
           to="/trails/&39.7392358&-104.990251&Denver,%20CO,%20USA"
@@ -94,7 +91,6 @@ export default function NavDrawer({ drawerOpen, setDrawerOpen }) {
             <ListItemText style={textStyle} primary="Seattle Trails" />
           </ListItem>
         </Link>
-
         <Link style={linkStyle} to={`/profile`}>
           <ListItem button onClick={() => setDrawerOpen(false)} key="user">
             <ListItemIcon>

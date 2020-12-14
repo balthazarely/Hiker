@@ -42,7 +42,7 @@ export default function Navbar() {
             className={classes.menuButton}
             color="inherit"
             aria-label="menu"
-            size="large"
+            size="medium"
             onClick={() => setDrawerOpen(true)}
           >
             <MenuIcon />

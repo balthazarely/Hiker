@@ -5,7 +5,6 @@ import { pageAnimation } from "../animation/animation";
 import { motion } from "framer-motion";
 import Pagination from "@material-ui/lab/Pagination";
 import styled from "styled-components";
-
 import {
   dataFromSnapshot,
   getHikeLogFromFirestore,
@@ -249,7 +248,7 @@ export default function Profile() {
                       )
                       .map((hike) => {
                         return (
-                          <HikeLogCard trail={hike} currentUser={currentUser} />
+                          <HikeLogCard trail={hike} currentUser={currentUser} key={hike.trailId} />
                         );
                       })}
                 </TabPanel>

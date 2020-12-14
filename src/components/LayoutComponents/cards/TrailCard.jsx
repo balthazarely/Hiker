@@ -152,6 +152,7 @@ export default function TrailCard({
                     disabled={alreadyFav ? true : false}
                     onClick={() => {
                       favoriteTrail(trailInfo, currentUser.uid);
+                      toast.info("Trail added to your Favorites.")
                       checkIfFavorite();
                     }}
                   >
